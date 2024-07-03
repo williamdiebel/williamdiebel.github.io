@@ -1,0 +1,44 @@
+Committing changes in the terminal involves a few best practices to ensure your project's history is clean and understandable. Here's a step-by-step guide:
+
+1. **Check the Status of Your Repository.** Before making any commit, it's good to check the status of your repository to see which files have been modified, added, or are untracked.
+
+```git status```
+
+2. **Stage Your Changes** After identifying the changes, you need to stage them. You can stage files individually or all at once. For best practices, stage files individually or in logical groups related to a specific change or feature.
+
+* To stage a specific file:
+```git add <file_path>```
+* To stage all modified and new files (but not deleted files):
+```git add .`
+* To stage all modified and new files (but not deleted files):
+```git add .```
+
+3. **Review Your Staged Changes** Before committing, it's a good idea to review what you're about to commit to avoid committing unwanted changes.
+
+```git diff --cached```
+
+4. **Commit Your Changes** Write a clear and concise commit message that describes what changes have been made and why. If the change is complex, you can write a brief summary in the first line, leave a blank line, and then provide more details.
+
+```
+git commit -m "A brief summary of the commit
+
+A more detailed explanation of the commit, if necessary. It's good practice to explain why you made the changes in addition to what was changed."
+```
+5. **Push Your Changes to the Remote Repository** After committing your changes locally, push them to the remote repository to share them with others.
+
+* If you're pushing to the main or master branch (check your repository's default branch):
+```git push origin main```
+or `master`.
+* If you're working on a different branch, replace `main` or `master` with your branch name.
+  
+6. **Pull Before You Push** Before pushing, especially if you're working in a team, it's a good practice to pull the latest changes from the remote repository. This helps to reduce merge conflicts.
+
+```git pull origin main```
+
+or for a specific branch:
+
+```git pull origin <branch_name>```
+
+7. **Resolve Any Merge Conflicts** If there are any merge conflicts after pulling, resolve them before pushing your changes.
+
+Following these steps will help you maintain a clean and understandable commit history in your projects.
