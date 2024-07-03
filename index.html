@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to My Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature Page</title>
+    <style>
+        body::before {
+    content: ""; /* Required for pseudo-elements */
+    position: absolute; /* Position it over the body */
+    top: 0;
+    left: 0;
+    width: 100%; /* Cover the full width */
+    height: 100%; /* Cover the full height */
+    background-image: url("/images/background.jpeg"); /* Your background image */
+    background-size: cover; /* Cover the entire area */
+    opacity: 0.2; /* Adjust opacity to make the image softer. Range: 0.0 to 1.0 */
+    z-index: -1; /* Ensure it's behind the content */
+}
+        body {
+            position: relative; /* Required for absolute positioning inside */
+            /* Other styles */
+            font-family: 'Optima', 'Helvetica', 'Arial', sans-serif;
+    }
+        .profile-container {
+            display: flex;
+            align-items: center;
+        }
+        .profile-container img {
+            border-radius: 50%; /* Creates the circular crop */
+            margin-right: 20px; /* Adds some space between the image and the text */
+            width: 150px; /* Adjust as needed */
+            height: 150px; /* Adjust as needed */
+            object-fit: cover; /* Ensures the image covers the area without distortion */
+        }
+        .profile-text {
+            flex: 1; /* Allows the text to fill the remaining space */
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>Welcome to my personal/professional website.</p>
+    <h1>William Diebel, PhD</h1>
+    <div class="profile-container">
+        <img src="/images/PhD_Photos_Profiles_028.jpg" alt="William Diebel">
+        <div class="profile-text">
+            <p>Hi! I'm Will. I recently earned my PhD in Operations Management and Sustainability at Western University's Ivey Business School, advised by Profs. Jury Gualandris and Robert D. Klassen. My doctoral work was supported in part by SSHRC (Joseph-Armand Bombardier Canada Graduate Scholarship).</p>
+            <p>My empirical research aims to understand how supply chains and society's most pressing environmental issues interact. My work primarily uses large panel datasets and econometric models.</p>
+            <p>I will be joining the Department of Management Science at the University of South Carolina, Darla Moore School of Business as a tenure track Assistant Professor in August 2024. Get to know more about me and my work by exploring my site.</p>
+        </div>
+    </div>
+    <p><a href="path/to/your/CV.pdf" target="_blank">Download my CV</a></p>
 </body>
 </html>
