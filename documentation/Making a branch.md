@@ -6,7 +6,9 @@ Here I will detail the instructions I am using to explore the branching function
 
 Before making any changes, you'll want to create a new branch in your Git repository. This allows you to work on a new feature or change without affecting the main codebase.
 
-```git checkout -b feature/cv-page```
+```
+git checkout -b feature/cv-page
+```
 
 This command creates a new branch named `feature/cv-page` and switches to it.
 
@@ -21,17 +23,23 @@ Now, on your new branch, you can make the necessary changes to create a separate
 
 After making the changes, you'll need to commit them to your branch. First, add the changes to the staging area:
 
-```git add cv.html index.html```
+```
+git add cv.html index.html
+```
 
 Then, commit the changes:
 
-```git commit -m "Create separate CV page and update link in index.html"```
+```
+git commit -m "Create separate CV page and update link in index.html"
+```
 
 ## Step 4: Push the Branch to Remote
 
 To share your new branch with others or to create a pull request, you'll need to push the branch to the remote repository:
 
-```git push origin feature/cv-page```
+```
+git push origin feature/cv-page
+```
 
 ## Step 5: Create a Pull Request
 
@@ -49,8 +57,10 @@ Once your pull request has been reviewed and approved, you can merge it into the
 
 After merging, make sure to update your local main branch:
 
-```git checkout main```
-```git pull origin main```
+```
+git checkout main
+git pull origin main
+```
 
 This workflow allows you to safely experiment with changes in a separate branch, review them, and then integrate them into your main project without disrupting the main codebase.
 
