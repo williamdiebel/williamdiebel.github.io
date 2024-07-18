@@ -13,13 +13,12 @@
         .profile-container {
             display: flex;
             align-items: center;
-            flex-direction: column; /* Stack elements vertically on smaller screens */
         }
         .profile-container img {
             border-radius: 50%; /* Creates the circular crop */
             margin-right: 20px; /* Adds some space between the image and the text */
-            width: 15vw; /* Adjust as needed, now responsive */
-            height: 15vw; /* Maintains aspect ratio */
+            width: 18vw; /* Adjust as needed, now responsive */
+            height: 18vw; /* Maintains aspect ratio */
             object-fit: cover; /* Ensures the image covers the area without distortion */
         }
         .profile-text {
@@ -28,6 +27,7 @@
         h1, h2, h3, h4, h5, h6 {
     font-weight: 300; /* Adjusts the font weight to be slimmer */
     /* Media Queries */
+}
     @media (max-width: 768px) {
         body {
             padding: 5px; /* Smaller padding for mobile */
@@ -45,7 +45,6 @@
             font-size: larger; /* Increase font size for readability */
         }
     }
-}
     </style>
 </head>
 <body>
