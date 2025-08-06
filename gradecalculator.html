@@ -15,17 +15,16 @@
 <body>
   <h1>Grade Calculator</h1>
   <form id="gradeForm">
-    <label>Exam 1 (0-100): <input type="number" id="exam1" min="0" max="100" required></label>
-    <label>Exam 2 (0-100): <input type="number" id="exam2" min="0" max="100" required></label>
-    <label>Exam 3 (0-100): <input type="number" id="exam3" min="0" max="100" required></label>
-    <label>Exam 4 (0-100): <input type="number" id="exam4" min="0" max="100" required></label>
-    <label>Homework (0-100): <input type="number" id="homework" min="0" max="100" required></label>
-    <label>Attendance (0-100): <input type="number" id="attendance" min="0" max="100" required></label>
+    <label>Exam 1 (0-100, 25%): <input type="number" id="exam1" min="0" max="100" required></label>
+    <label>Exam 2 (0-100, 25%): <input type="number" id="exam2" min="0" max="100" required></label>
+    <label>Exam 3 (0-100, 25%): <input type="number" id="exam3" min="0" max="100" required></label>
+    <label>Homework (0-100, 20%): <input type="number" id="homework" min="0" max="100" required></label>
+    <label>Attendance (0-100, 5%): <input type="number" id="attendance" min="0" max="100" required></label>
     <button type="submit">Calculate Grade</button>
   </form>
   <div class="result" id="result"></div>
   <script>
-    // Configure letter grade thresholds here
+    // Calculate weighted score based on: Exams = 75% (25% each), Homework = 20%, Attendance = 5%
     const thresholds = {
       A: 90,
       BPlus: 87,
@@ -41,41 +40,29 @@
       const exam1 = parseFloat(document.getElementById('exam1').value) || 0;
       const exam2 = parseFloat(document.getElementById('exam2').value) || 0;
       const exam3 = parseFloat(document.getElementById('exam3').value) || 0;
-      const exam4 = parseFloat(document.getElementById('exam4').value) || 0;
       const homework = parseFloat(document.getElementById('homework').value) || 0;
       const attendance = parseFloat(document.getElementById('attendance').value) || 0;
 
-      // Calculate weighted score
       const weightedScore =
         (exam1 * 0.25) +
         (exam2 * 0.25) +
         (exam3 * 0.25) +
-        (exam4 * 0.25) +
         (homework * 0.20) +
         (attendance * 0.05);
 
-      // Determine letter grade
       let letter = 'F';
-      if (weightedScore >= thresholds.A) {
-        letter = 'A';
-      } else if (weightedScore >= thresholds.BPlus) {
-        letter = 'B+';
-      } else if (weightedScore >= thresholds.B) {
-        letter = 'B';
-      } else if (weightedScore >= thresholds.CPlus) {
-        letter = 'C+';
-      } else if (weightedScore >= thresholds.C) {
-        letter = 'C';
-      } else if (weightedScore >= thresholds.DPlus) {
-        letter = 'D+';
-      } else if (weightedScore >= thresholds.D) {
-        letter = 'D';
-      }
+      if (weightedScore >= thresholds.A) letter = 'A';
+      else if (weightedScore >= thresholds.BPlus) letter = 'B+';
+      else if (weightedScore >= thresholds.B) letter = 'B';
+      else if (weightedScore >= thresholds.CPlus) letter = 'C+';
+      else if (weightedScore >= thresholds.C) letter = 'C';
+      else if (weightedScore >= thresholds.DPlus) letter = 'D+';
+      else if (weightedScore >= thresholds.D) letter = 'D';
 
-      // Display result
       document.getElementById('result').innerHTML =
         `Final Score: ${weightedScore.toFixed(2)}%<br>Letter Grade: ${letter}`;
     });
   </script>
 </body>
 </html>
+
