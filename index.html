@@ -3,65 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>William Diebel, PhD</title>
-    <link rel="icon" type="image/png" href="/Users/williamdiebel/Library/CloudStorage/Dropbox/My Mac (Will’s Laptop)/Documents/GitHub/williamdiebel.github.io/images/favicon.jpeg"/> <!-- Add your favicon file path -->
+    <title>William Diebel, PhD | Supply Chain & Sustainability Researcher</title>
+    <link rel="icon" type="image/jpeg" href="/images/favicon.jpeg">
     <style>
+        :root {
+            --primary-color: #1a5f4a;
+            --primary-light: #2a8f6a;
+            --accent-color: #e8f4f0;
+            --text-primary: #2d3748;
+            --text-secondary: #4a5568;
+            --text-muted: #718096;
+            --border-color: #e2e8f0;
+            --background: #ffffff;
+            --background-alt: #f7fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Optima', 'Helvetica', 'Arial', sans-serif;
-            padding: 100px; /* Adds padding around the entire page */
-    }
-        .profile-container {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: var(--text-primary);
+            line-height: 1.7;
+            background: var(--background);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 0 20px;
+        }
+
+        nav ul {
             display: flex;
+            justify-content: center;
             align-items: center;
+            list-style: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px 0;
+            gap: 30px;
         }
-        .profile-container img {
-            border-radius: 50%; /* Creates the circular crop */
-            margin-right: 20px; /* Adds some space between the image and the text */
-            width: 18vw; /* Adjust as needed, now responsive */
-            height: 18vw; /* Maintains aspect ratio */
-            object-fit: cover; /* Ensures the image covers the area without distortion */
+
+        nav a {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
         }
-        .profile-text {
-            flex: 1; /* Allows the text to fill the remaining space */
+
+        nav a:hover {
+            color: var(--primary-color);
         }
-        h1, h2, h3, h4, h5, h6 {
-    font-weight: 300; /* Adjusts the font weight to be slimmer */
-    /* Media Queries */
-}
-    @media (max-width: 768px) {
-        body {
-            padding: 5px; /* Smaller padding for mobile */
+
+        /* Main container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px 30px 60px;
         }
-        .profile-container {
-            flex-direction: column; /* Stack elements vertically */
+
+        /* Header/Hero section */
+        header {
+            text-align: center;
+            padding: 40px 0 50px;
+            border-bottom: 1px solid var(--border-color);
         }
-        .profile-container img {
-            margin-right: 0; /* Remove margin between image and text */
-            margin-bottom: 20px; /* Add some space below the image */
-            width: 50vw; /* Larger percentage for smaller screens */
-            height: 50vw; /* Keep the aspect ratio */
+
+        .profile-image {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 25px;
+            border: 4px solid var(--accent-color);
         }
-        h1, h2, h3, h4, h5, h6 {
-            font-size: larger; /* Increase font size for readability */
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
-    }
+
+        .subtitle {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .quick-links a {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .quick-links a:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Section styling */
+        section {
+            padding: 50px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+
+        h3 {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 25px 0 12px;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--primary-light);
+        }
+
+        /* Research cards */
+        .research-overview {
+            background: var(--accent-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .research-overview p {
+            color: var(--text-primary);
+            margin-bottom: 0;
+        }
+
+        .essay {
+            margin-bottom: 30px;
+            padding-left: 20px;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .essay-title {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .essay p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+        }
+
+        /* Publications */
+        .publication {
+            margin-bottom: 25px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .publication:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .publication-title {
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .publication-authors {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .publication-venue {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .publication-status {
+            display: inline-block;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.75rem;
+            padding: 3px 10px;
+            background: var(--accent-color);
+            color: var(--primary-color);
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+
+        .publication-award {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-top: 8px;
+        }
+
+        /* Contact section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .contact-item {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .contact-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .contact-value {
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Teaching link */
+        .teaching-tools {
+            margin-top: 15px;
+        }
+
+        .teaching-tools a {
+            font-family: 'Helvetica Neue', 'Arial', sans-serif;
+            font-size: 0.85rem;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 20px 40px;
+            }
+
+            nav ul {
+                gap: 15px;
+                padding: 12px 0;
+            }
+
+            nav a {
+                font-size: 0.8rem;
+            }
+
+            header {
+                padding: 30px 0 40px;
+            }
+
+            .profile-image {
+                width: 140px;
+                height: 140px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .quick-links {
+                gap: 10px;
+            }
+
+            .quick-links a {
+                font-size: 0.8rem;
+                padding: 6px 12px;
+            }
+
+            section {
+                padding: 35px 0;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>William Diebel, PhD</h1>
-    </header>
-    <div class="profile-container">
-        <img src="/images/diebel_will-2_square.png" alt="William Diebel">
-        <div class="profile-text">
-            <p>Hi! I'm Will, a tenure-track Assistant Professor in the <a href="https://sc.edu/study/colleges_schools/moore/study/management_science/index.php">Department of Management Science</a> at the University of South Carolina - Darla Moore School of Business. My research focuses on the intersection of supply chains and critical environmental issues, with a particular interest in corporate environmental transparency.</p> 
-            <p>Prior to joining USC Moore, I earned my PhD in Operations Management from the <a href="https://www.ivey.uwo.ca">Ivey Business School</a> at Western University, where I was a recipient of the <a href="https://www.nserc-crsng.gc.ca/Students-Etudiants/PG-CS/CGSD-BESCD_eng.asp">Joseph-Armand Bombardier Canada Graduate Scholarship - Doctoral</a>, supported by SSHRC.</p> 
-            <p>My research has been published in the <i>Journal of Operations Management</i> (<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/joom.1293">DOI: 10.1002/joom.1293</a>).</p>
-            <p>I currently teach the MGSC 395 Operations Management undergraduate degree course in Fall semesters.</p>
-        </div>
-        </div>
-    <p><a href="/files/CV_WDiebel_26_01.pdf" target="_blank">CV</a></p>
-    <p><a href="https://scholar.google.com/citations?user=wOYFzC8AAAAJ&hl=en" target="_blank">Google Scholar</a></p>
-    <p><a href="gradecalculator.html">MGSC395 Grade Calculator</a></p>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#publications">Publications</a></li>
+            <li><a href="#teaching">Teaching</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <header>
+            <img src="/images/diebel_will-2_square.png" alt="William Diebel" class="profile-image">
+            <h1>William Diebel, PhD</h1>
+            <p class="subtitle">Assistant Professor of Management Science<br>University of South Carolina</p>
+            <div class="quick-links">
+                <a href="/files/CV_WDiebel_26_01.pdf" target="_blank">CV</a>
+                <a href="https://scholar.google.com/citations?user=wOYFzC8AAAAJ&hl=en" target="_blank">Google Scholar</a>
+                <a href="https://github.com/williamdiebel" target="_blank">GitHub</a>
+                <a href="https://sc.edu/study/colleges_schools/moore/directory/diebel_william.php" target="_blank">USC Faculty Page</a>
+            </div>
+        </header>
+
+        <section id="about">
+            <h2>About</h2>
+            <p>I am a tenure-track Assistant Professor in the <a href="https://sc.edu/study/colleges_schools/moore/study/management_science/index.php">Department of Management Science</a> at the University of South Carolina's Darla Moore School of Business. My research examines the intersection of supply chains and critical environmental issues, with a particular focus on corporate environmental transparency.</p>
+            <p>I earned my PhD in Operations Management from the <a href="https://www.ivey.uwo.ca">Ivey Business School</a> at Western University, where I was a recipient of the <a href="https://www.nserc-crsng.gc.ca/Students-Etudiants/PG-CS/CGSD-BESCD_eng.asp">Joseph-Armand Bombardier Canada Graduate Scholarship</a> from the Social Sciences and Humanities Research Council (SSHRC). Prior to my doctoral studies, I completed a Master's in Environment and Sustainability and a Bachelor's in Chemistry, both at Western University.</p>
+            <p>My work has been published in the <em>Journal of Operations Management</em> and <em>The Oxford Handbook of Supply Chain Management</em>. I currently serve on the Editorial Review Board for the <em>Journal of Supply Chain Management</em> and regularly review for leading operations management journals.</p>
+        </section>
+
+        <section id="research">
+            <h2>Research</h2>
+            <div class="research-overview">
+                <p>My dissertation, <strong>The Causes and Consequences of Environmental Transparency in Supply Chains</strong>, investigates how environmental transparency can be leveraged to advance corporate sustainability and address climate change challenges. With over 90% of corporate environmental impacts residing in supplier operations, understanding the drivers and effectiveness of transparency initiatives is critical for meaningful climate action.</p>
+            </div>
+
+            <h3>Research Themes</h3>
+
+            <div class="essay">
+                <div class="essay-title">Drivers of Supplier Transparency</div>
+                <p>What decision-making logics do suppliers follow when determining their extent of environmental transparency? My research reveals that suppliers selectively mimic the transparency levels of corporate buyers they perceive as exemplary, guided by sustainability and market logics. Notably, sustainability considerations appear more influential than previously understood.</p>
+            </div>
+
+            <div class="essay">
+                <div class="essay-title">Transparency and Media Scrutiny</div>
+                <p>Does enhanced supply chain transparency reduce environmental incidents, or does it invite greater scrutiny? Using quasi-experimental methods, I find that transparency programs cause significant increases in media-reported environmental incidents through a "spotlight mechanism"&mdash;revealing a paradox where transparency simultaneously improves supplier performance while increasing buyer reputational risk.</p>
+            </div>
+
+            <div class="essay">
+                <div class="essay-title">Transparency and Climate Commitments</div>
+                <p>How does awareness of supply chain environmental impacts influence firms' commitment to science-based carbon reduction targets? My research demonstrates that firms with greater environmental supply chain orientation&mdash;whether developed proactively or reactively&mdash;are significantly more likely to make Science-Based Targets initiative (SBTi) commitments.</p>
+            </div>
+        </section>
+
+        <section id="publications">
+            <h2>Publications</h2>
+
+            <h3>Peer-Reviewed</h3>
+
+            <div class="publication">
+                <div class="publication-title">How Do Suppliers Respond to Institutional Complexity? Examining Voluntary Public Environmental Disclosure in a Global Manufacturing Supply Network</div>
+                <div class="publication-authors">Diebel, W., Gualandris, J., & Klassen, R. D.</div>
+                <div class="publication-venue"><em>Journal of Operations Management</em>, 2024, 70(2), 285&ndash;315. <a href="https://doi.org/10.1002/joom.1293" target="_blank">DOI: 10.1002/joom.1293</a></div>
+                <div class="publication-award">AOM OSCM Best Paper Award (top 10%) & Best Student Paper Finalist (top 3), 2021</div>
+            </div>
+
+            <div class="publication">
+                <div class="publication-title">More Sustainable Supply Chains</div>
+                <div class="publication-authors">Klassen, R. D., Gualandris, J., & Diebel, W.</div>
+                <div class="publication-venue">In Choi, T. Y., et al. (Eds.), <em>The Oxford Handbook of Supply Chain Management</em>. Oxford University Press, 2020. <a href="https://doi.org/10.1093/oxfordhb/9780190066727.013.17" target="_blank">DOI</a></div>
+            </div>
+
+            <h3>Under Review</h3>
+
+            <div class="publication">
+                <div class="publication-title">The (Un)Intended Effects of Supply Chain Transparency on Media-Reported Environmental Incidents</div>
+                <div class="publication-authors">Diebel, W., Gualandris, J., & Klassen, R. D.</div>
+                <div class="publication-venue"><em>Manufacturing & Service Operations Management</em> &mdash; 1st round review. <a href="https://ssrn.com/abstract=5179964" target="_blank">SSRN</a></div>
+            </div>
+
+            <h3>Working Papers</h3>
+
+            <div class="publication">
+                <div class="publication-title">Environmental Supply Chain Orientation and Science-Based Targets</div>
+                <div class="publication-authors">Diebel, W. & Klassen, R. D.</div>
+                <div class="publication-venue">Finalizing for submission to <em>Production and Operations Management</em></div>
+            </div>
+
+            <div class="publication">
+                <div class="publication-title">From Seeing to Showing: A Polycentric and Dynamic View of Supply Chain Transparency for Broader Impact</div>
+                <div class="publication-authors">Yan, T., Diebel, W., & Marques, L.</div>
+                <div class="publication-venue">Finalizing for submission to <em>Journal of Supply Chain Management</em></div>
+            </div>
+
+            <div class="publication">
+                <div class="publication-title">Driving Transparency: The Role of Chief Supply Chain Officers</div>
+                <div class="publication-authors">Thompson, K., Arora, P., Diebel, W., & Skowronski, K.</div>
+                <div class="publication-venue">Preparing for submission to <em>Journal of Operations Management</em></div>
+            </div>
+
+            <div class="publication">
+                <div class="publication-title">Vertical Integration, Integrative Capabilities, and ESG Violations</div>
+                <div class="publication-authors">Petersen, F. & Diebel, W.</div>
+                <div class="publication-venue">Preparing for submission</div>
+            </div>
+        </section>
+
+        <section id="teaching">
+            <h2>Teaching</h2>
+            <p>I teach <strong>MGSC 395: Operations Management</strong> to undergraduates at the Darla Moore School of Business during Fall semesters. The course covers core operations management concepts including process analysis, capacity planning, inventory management, and quality control.</p>
+            <div class="teaching-tools">
+                <a href="gradecalculator.html">MGSC 395 Grade Calculator</a>
+            </div>
+        </section>
+
+        <section id="contact">
+            <h2>Contact</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value"><a href="mailto:william.diebel@moore.sc.edu">william.diebel@moore.sc.edu</a></div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-label">Office</div>
+                    <div class="contact-value">Darla Moore School of Business<br>1014 Greene St<br>Columbia, SC 29208</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        &copy; 2025 William Diebel
+    </footer>
 </body>
 </html>
