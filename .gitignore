@@ -1,1 +1,13 @@
 .DS_Store
+
+# LaTeX build artifacts (VS Code LaTeX Workshop auto-builds files/Resume_for_Frehers.tex).
+# The published CV is files/CV_WDiebel.pdf; keep the editor's output out of the repo
+# so only one copy of the CV is ever served.
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+files/Resume_for_Frehers.pdf
