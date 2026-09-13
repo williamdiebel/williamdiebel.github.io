@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#1F5FBF">
+<title>Congaree Bottling Fill Station</title>
+<link rel="icon" type="image/jpeg" href="/images/favicon.jpeg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;600&display=swap" media="print" onload="this.media='all'">
+<style>
+:root{
+  --ground:#EEF0F2; --panel:#FFFFFF; --panel-2:#F6F7F9; --line:#D3D8DE; --line-2:#E4E8EC;
+  --ink:#1B2430; --muted:#5B6672; --accent:#1F5FBF; --accent-ink:#FFFFFF; --accent-soft:#E3ECFA;
+  --amber:#C77A00; --amber-soft:#FBF1DF; --good:#2E7D4F; --good-soft:#E2F1E7;
+  --crit:#B3261E; --crit-soft:#F8E4E2; --focus:#1F5FBF;
+  --display:"Chakra Petch","Arial Narrow",Arial,sans-serif;
+  --body:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#141A21; --panel:#1C242D; --panel-2:#222C36; --line:#36424E; --line-2:#2B3540;
+    --ink:#E6EBF0; --muted:#98A4B0; --accent:#6FA3F2; --accent-ink:#0E1620; --accent-soft:#233650;
+    --amber:#F0A830; --amber-soft:#3A2E14; --good:#6CC493; --good-soft:#1C3527;
+    --crit:#F0766B; --crit-soft:#452220; --focus:#6FA3F2; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141A21; --panel:#1C242D; --panel-2:#222C36; --line:#36424E; --line-2:#2B3540;
+  --ink:#E6EBF0; --muted:#98A4B0; --accent:#6FA3F2; --accent-ink:#0E1620; --accent-soft:#233650;
+  --amber:#F0A830; --amber-soft:#3A2E14; --good:#6CC493; --good-soft:#1C3527;
+  --crit:#F0766B; --crit-soft:#452220; --focus:#6FA3F2; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{touch-action:manipulation}
+html,body{overscroll-behavior:none}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-block:0 48px;padding-inline:16px;-webkit-text-size-adjust:100%}
+.wrap{max-width:900px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:1.35rem;font-weight:700;letter-spacing:.01em}
+h2{font-size:1.15rem;font-weight:600}
+h2:focus{outline:none}
+h3{font-size:.95rem;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:var(--muted)}
+p{margin:0}
+.eyebrow{font-family:var(--display);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.quote{font-style:italic;color:var(--muted);max-width:62ch}
+button{font:inherit;color:inherit}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+
+/* top bar */
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding-block:14px 10px;border-bottom:2px solid var(--ink)}
+.top .brand{display:flex;flex-direction:column;gap:2px;flex:1 1 240px}
+.top .brand small{font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--panel);white-space:nowrap}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.pill.run i{background:var(--good);box-shadow:0 0 0 3px var(--good-soft)}
+.pill.stop i{background:var(--crit);box-shadow:0 0 0 3px var(--crit-soft)}
+.pill.idle i{background:var(--amber);box-shadow:0 0 0 3px var(--amber-soft)}
+
+/* stepper */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-block:14px 18px}
+.steps div{font-family:var(--display);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:6px 4px 8px;
+  border-top:3px solid var(--line);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.steps div b{font-weight:700;margin-right:4px}
+.steps div.done{border-top-color:var(--good);color:var(--good)}
+.steps div.now{border-top-color:var(--accent);color:var(--accent)}
+@media (max-width:480px){
+  .steps{display:flex;gap:4px}
+  .steps div{flex:0 0 auto;min-width:34px;text-align:center;font-size:.66rem;letter-spacing:.02em;padding-inline:4px;white-space:normal;overflow:visible}
+  .steps div.now{flex:1 1 auto;text-align:left}
+  .steps div:not(.now) span{display:none}
+}
+
+/* panels */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:18px;margin-block:0 16px}
+.panel header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:12px}
+.panel .lead{max-width:62ch;color:var(--ink)}
+.note{font-size:.9rem;color:var(--muted);max-width:62ch}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.grow{flex:1 1 200px}
+ol.rules{margin:0;padding-left:1.3em;max-width:62ch;display:flex;flex-direction:column;gap:6px}
+ol.rules li::marker{font-family:var(--display);font-weight:600;color:var(--accent)}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:.85rem;color:var(--muted)}
+label.f span{font-family:var(--display);letter-spacing:.06em;text-transform:uppercase;font-size:.7rem}
+input[type=text],select{font:inherit;font-family:var(--mono);font-size:max(16px,1em);padding:8px 10px;border:1px solid var(--line);border-radius:4px;
+  background:var(--panel-2);color:var(--ink);min-width:0;width:100%}
+.btn{font-family:var(--display);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:.85rem;padding:10px 16px;border-radius:4px;
+  border:1px solid var(--ink);background:var(--panel);cursor:pointer;min-height:44px}
+@media (hover:hover){.btn:hover{background:var(--panel-2)}}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{background:var(--crit);border-color:var(--crit);color:#fff}
+.btn.ghost{border-color:var(--line);color:var(--muted)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.link{border:0;background:none;text-transform:none;letter-spacing:0;font-family:var(--body);font-weight:500;color:var(--accent);text-decoration:underline;padding:4px 0;min-height:0}
+.btn.link:disabled{text-decoration:none;color:var(--muted)}
+
+/* the valve */
+.station{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:stretch}
+@media (max-width:640px){.station{grid-template-columns:1fr}.valvebox{order:2}}
+.valvebox{position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;padding:16px;border:1px solid var(--line);border-radius:6px;background:var(--panel-2);
+  -webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.tag{position:absolute;top:8px;right:8px;transform:rotate(-6deg);font:.62rem var(--display);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--amber);color:var(--amber);padding:2px 6px;border-radius:2px;background:var(--panel)}
+.valve{--d:min(280px,calc(100vw - 72px));width:var(--d);height:var(--d);max-width:100%;border-radius:50%;border:6px solid var(--accent);background:var(--panel);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;user-select:none;-webkit-user-select:none;
+  -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:none;box-shadow:0 6px 0 var(--accent-soft), inset 0 0 0 10px var(--panel-2);transition:transform .08s;padding:12px}
+.valve .big{font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:.06em;pointer-events:none}
+.valve .sub{font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-family:var(--display);text-align:center;pointer-events:none}
+.valve.open{background:var(--accent-soft);transform:translateY(4px);box-shadow:0 2px 0 var(--accent-soft), inset 0 0 0 10px var(--accent-soft)}
+.valve.open .big{color:var(--accent)}
+.valve:disabled{cursor:not-allowed;opacity:.5}
+.readout{width:100%;background:#1B2430;color:#F0A830;font-family:var(--mono);font-size:1.5rem;font-weight:600;text-align:center;
+  padding:10px 12px;border-radius:4px;letter-spacing:.04em;font-variant-numeric:tabular-nums;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.readout small{font-size:.74rem;color:#B8C0C8;font-weight:400;letter-spacing:.08em;text-transform:uppercase;font-family:var(--display)}
+.readout .msg{font-size:.9rem;font-weight:400;font-family:var(--body);letter-spacing:0;color:#F0A830}
+.readout .tray{font-size:1.15rem}
+.readout .dev{font-size:.8rem;color:#B8C0C8;font-weight:400;letter-spacing:.02em}
+.spec{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:100%}
+.spec div{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:6px 8px;text-align:center}
+.spec b{display:block;font-family:var(--mono);font-size:1rem}
+.spec span{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-family:var(--display);color:var(--muted)}
+
+/* current sample */
+.curbox{display:flex;flex-direction:column;gap:10px}
+.fills{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.fills div{border:1px dashed var(--line);border-radius:4px;padding:8px 4px;text-align:center;font-family:var(--mono);font-size:1.05rem;min-height:48px;background:var(--panel)}
+.fills div.has{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
+.fills div small{display:block;font-family:var(--display);font-size:.62rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.operator{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;padding:10px 12px;border-radius:4px;background:var(--amber-soft);border:1px solid var(--amber)}
+.operator b{font-family:var(--display);letter-spacing:.04em}
+.operator .note{flex-basis:100%;font-size:.82rem}
+.lasttray{font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+.callbox{padding:14px;border:2px solid var(--accent);border-radius:6px;background:var(--accent-soft);display:flex;flex-direction:column;gap:10px}
+.callbox .row{flex-direction:column;align-items:stretch;gap:12px}
+.callbox .btn{width:100%;min-height:48px}
+.callbox .btn.danger{font-size:1rem}
+.verdict{padding:14px 16px;border-radius:6px;border:1px solid var(--line);background:var(--panel-2);display:flex;flex-direction:column;gap:8px}
+.verdict.good{border-color:var(--good);background:var(--good-soft)}
+.verdict.crit{border-color:var(--crit);background:var(--crit-soft)}
+.verdict.amber{border-color:var(--amber);background:var(--amber-soft)}
+.verdict.blue{border-color:var(--accent);background:var(--accent-soft)}
+.verdict h2.big{font-size:2rem;padding-left:12px;border-left:6px solid currentColor;line-height:1.05}
+.verdict.good h2.big{color:var(--good)} .verdict.crit h2.big{color:var(--crit)} .verdict.amber h2.big{color:var(--amber)} .verdict.blue h2.big{color:var(--accent)}
+.evidence{font-family:var(--mono);font-size:.85rem;line-height:1.6;white-space:pre-wrap;color:var(--ink)}
+.scalebox{font-family:var(--mono);font-size:.85rem;background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:10px 12px;line-height:1.6}
+
+/* table */
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.9rem;font-variant-numeric:tabular-nums}
+th,td{padding:6px 8px;text-align:right;border-bottom:1px solid var(--line-2);white-space:nowrap}
+th{font-family:var(--display);font-weight:600;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line)}
+td:first-child,th:first-child{text-align:left}
+tr.mon td{background:var(--panel-2)}
+tr.cur td{background:var(--accent-soft)}
+td.hid{color:var(--muted)}
+td.oc{color:var(--crit);font-weight:600}
+td.ocb{color:var(--crit);outline:1px solid var(--crit);outline-offset:-2px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.8rem;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:4px}
+
+/* limits form */
+.lgroup{display:flex;flex-direction:column;gap:6px}
+.lgroup h3{font-size:.8rem}
+.limits{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.limits label.f{position:relative}
+.limits input{max-width:none;padding-right:44px}
+.limits .ok,.limits .bad,.limits .blank,.limits .dep{position:absolute;right:8px;bottom:11px;font-family:var(--display);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}
+.limits .ok{color:var(--good)} .limits .bad{color:var(--crit)} .limits .blank{color:var(--amber)} .limits .dep{color:var(--muted)}
+.formula{font-family:var(--mono);font-size:.85rem;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:10px 12px;overflow-x:auto;line-height:1.7}
+.keyblock{border:1px dashed var(--amber);border-radius:6px;padding:12px 14px;background:var(--amber-soft);display:flex;flex-direction:column;gap:8px}
+.keyblock .mono{font-size:.95rem}
+ol.steps-list{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px;max-width:62ch}
+
+/* charts */
+.chart{width:100%;height:auto;display:block;margin-top:8px}
+.chart text{font-family:var(--mono);font-size:1em;fill:var(--muted);paint-order:stroke;stroke:var(--panel);stroke-width:3px;stroke-linejoin:round}
+.chart .ttl{font-family:var(--display);font-size:1.1em;letter-spacing:.08em;text-transform:uppercase;fill:var(--ink);font-weight:600}
+.chart .grid{stroke:var(--line-2);stroke-width:1}
+.chart .axis{stroke:var(--line);stroke-width:1}
+.chart .cl{stroke:var(--ink);stroke-width:1.2}
+.chart .lim{stroke:var(--crit);stroke-width:1.2;stroke-dasharray:5 3}
+.chart .ln{stroke:var(--accent);stroke-width:1.6;fill:none}
+.chart .pt{fill:var(--accent);stroke:var(--panel);stroke-width:1.5}
+.chart .pt.oc{fill:var(--crit)}
+.chart .pt.ocb{fill:var(--panel);stroke:var(--crit);stroke-width:2}
+.chart .ring{fill:none;stroke:var(--crit);stroke-width:1.5}
+.chart .fault{stroke:var(--amber);stroke-width:2;stroke-dasharray:3 3}
+.chart .fault-band{fill:var(--amber);opacity:.10}
+.chart .stopm{stroke:var(--crit);stroke-width:2}
+.chart .lab{fill:var(--amber);font-family:var(--display);font-size:1em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.chart .lab.s,.chart .lab.c{fill:var(--crit)}
+.chart .liml{fill:var(--crit)} .chart .cll{fill:var(--ink)}
+
+dl.dlist{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;margin:0;font-size:.9rem}
+dl.dlist dt{color:var(--muted)} dl.dlist dd{margin:0;font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.summary{font-family:var(--mono);font-size:.85rem;background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:12px 14px;white-space:pre-wrap;line-height:1.6}
+details.instr{border-top:1px dashed var(--line);padding-top:10px;color:var(--muted);font-size:.85rem}
+details.instr summary{cursor:pointer;font-family:var(--display);letter-spacing:.08em;text-transform:uppercase;font-size:.72rem}
+details.instr .row{margin-top:8px}
+.foot{font-size:.78rem;color:var(--muted);margin-top:18px}
+.hidden{display:none!important}
+#room{position:fixed;inset:0;z-index:50;display:grid;place-content:center;text-align:center;color:#fff;padding:24px;gap:10px;cursor:pointer}
+#room .t{font-size:1.4rem;font-family:var(--display)}
+#room .o{font-size:clamp(2rem,9vw,5rem);font-family:var(--display);font-weight:700;line-height:1;text-transform:uppercase;letter-spacing:.02em}
+#room .q{font-size:1.3rem;font-family:var(--display);text-transform:uppercase;letter-spacing:.1em}
+#room .d{font-size:1rem;opacity:.9}
+#room .x{font-size:.8rem;opacity:.7;margin-top:12px;text-transform:uppercase;letter-spacing:.1em;font-family:var(--display)}
+@media (prefers-reduced-motion: reduce){.valve{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <h1>Congaree Bottling · Fill Station</h1>
+      <small>Line 4 · Congaree Spring Water · 300 mL PET · MGSC 395</small>
+    </div>
+    <span class="pill idle" id="status"><i></i><span id="statusText">Station idle</span></span>
+  </div>
+
+  <div class="steps" id="steps">
+    <div data-step="0"><b>1</b><span>Setup</span></div>
+    <div data-step="1"><b>2</b><span>Baseline</span></div>
+    <div data-step="2"><b>3</b><span>Limits</span></div>
+    <div data-step="3"><b>4</b><span>Production</span></div>
+    <div data-step="4"><b>5</b><span>Report</span></div>
+  </div>
+
+  <!-- STEP 1: setup -->
+  <section class="panel" id="p0">
+    <header><h2 tabindex="-1">Your shift starts now</h2><span class="eyebrow">Step 1 of 5 · Setup</span></header>
+    <div class="stack">
+      <p class="quote">Plant manager: "Line 4 has been fine all week. Get me a baseline before the truck comes."</p>
+      <p class="lead">You run the fill valve on Line 4. Hold it open about 3 seconds to fill a 300 mL bottle (it flows 100 mL per second). You can't see into the bottle, so you fill by feel. A scale weighs each tray of four bottles.</p>
+      <ol class="rules">
+        <li>Pick a <b>recorder</b>: worksheet, pen, calculator.</li>
+        <li>Everyone else is an <b>operator</b>. Pass the valve after <b>every bottle</b>, around the circle, so each sample of 4 comes from 4 different people. The phone stays on the table.</li>
+        <li><b>Feel only.</b> No counting out loud, no stopwatch. Never adjust your hold because of the numbers: deciding whether the process changed is the chart's job, not the operator's.</li>
+        <li>One phone for the whole shift. The data lives on it. No private tab.</li>
+      </ol>
+      <div class="row">
+        <label class="f grow"><span>Team name</span><input type="text" id="team" placeholder="e.g. Table 3" maxlength="40" inputmode="text" autocomplete="off"></label>
+        <label class="f" style="flex:0 1 170px"><span>Section</span>
+          <select id="section"><option value="">choose</option><option value="016">016 · 2:20 pm</option><option value="017">017 · 3:55 pm</option><option value="018">018 · 5:30 pm</option></select></label>
+      </div>
+      <div class="row">
+        <label class="f grow"><span>Operators, in seating order (initials, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. MK AB CD EF GH" maxlength="60" inputmode="text" autocomplete="off" autocapitalize="characters"></label>
+      </div>
+      <p class="note mono" id="rosterMsg"></p>
+      <div id="restoreWrap" class="hidden"><button class="btn link" id="restoreBtn" type="button"></button></div>
+      <div class="station">
+        <div class="valvebox">
+          <span class="tag">Sight glass: out of service</span>
+          <button class="valve" id="valve0" type="button"><span class="big">HOLD</span><span class="sub">press &amp; hold ≈ 3 s, then release</span></button>
+          <div class="readout" id="readout0" aria-live="polite"><small>Practice fill · target 300</small><span>---</span></div>
+        </div>
+        <div class="curbox">
+          <h3>Warm-up: 3 practice fills each</h3>
+          <p class="note">Each operator takes <b>3 practice fills in a row</b>, reading shown after each. That is your training to standard; after this the scale only shows a full tray. Practice fills are not saved.</p>
+          <p class="note mono" id="warmCount">Enter your operators first.</p>
+          <p class="note mono" id="warmVals"></p>
+          <p class="note">Can't land on 300 twice? Nobody can. That bounce is common-cause variation, and the baseline is about to measure it.</p>
+          <div class="row" style="margin-top:auto"><button class="btn primary" id="startBaseline" type="button">Start the baseline run</button><button class="btn link hidden" id="startAnyway" type="button">Start anyway (an operator left)</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 2 / STEP 4: the run -->
+  <section class="panel hidden" id="p1">
+    <header><h2 tabindex="-1" id="runTitle">Baseline run</h2><span class="eyebrow" id="runStep">Step 2 of 5 · Baseline</span></header>
+    <div class="stack">
+      <p class="lead" id="runLead"></p>
+      <p class="note" id="runNote"></p>
+      <div class="station">
+        <div class="valvebox">
+          <span class="tag">Sight glass: out of service</span>
+          <button class="valve" id="valve" type="button"><span class="big">HOLD</span><span class="sub">press &amp; hold ≈ 3 s, then release</span></button>
+          <div class="readout" id="readout" aria-live="polite"><small>Scale</small><span>---</span></div>
+          <div class="spec"><div><b>300</b><span>target mL</span></div><div><b>100</b><span>mL / sec</span></div><div><b class="mono" id="nLeft">32</b><span>fills left</span></div></div>
+        </div>
+        <div class="curbox">
+          <div class="operator" id="opStrip"><span id="opMain">Sample <b>1</b> · bottle <b>1 of 4</b></span><span id="opWho"></span><span class="note">pass the valve after every bottle · <button class="btn link" id="skipOp" type="button"></button></span></div>
+          <div class="fills" id="fills"></div>
+          <p class="lasttray" id="lastTray"></p>
+          <div id="callWrap" class="hidden"></div>
+          <div id="runDone"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP 3: limits -->
+  <section class="panel hidden" id="p2">
+    <header><h2 tabindex="-1">Set the control limits</h2><span class="eyebrow">Step 3 of 5 · Limits</span></header>
+    <div class="stack">
+      <p class="lead"><b>Split it:</b> each operator computes the mean and range of one sample (sum ÷ 4, largest − smallest); one person does the two averages and the four limits; the recorder checks the worksheet against the log. Enter your six numbers and the station checks them.</p>
+      <p class="note">(A plant would take 20 to 25 samples before trusting these limits; 8 is our classroom compromise, so expect them to be a little rough.)</p>
+      <div class="formula">n = 4 bottles per sample: A2 = 0.729, D3 = 0, D4 = 2.282<br><b>R chart first:</b> UCL<sub>R</sub> = D4 · R̄ &nbsp; LCL<sub>R</sub> = D3 · R̄ &nbsp;&nbsp;·&nbsp;&nbsp; <b>Then the x̄ chart:</b> UCL, LCL = x̿ ± A2 · R̄</div>
+      <div class="lgroup"><h3>Averages</h3>
+        <div class="limits">
+          <label class="f"><span>x̿ grand mean (mL)</span><input type="text" id="L_xbb" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="next" autocomplete="off"></label>
+          <label class="f"><span>R̄ average range (mL)</span><input type="text" id="L_rb" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="next" autocomplete="off"></label>
+        </div></div>
+      <div class="lgroup"><h3>R chart first</h3>
+        <div class="limits">
+          <label class="f"><span>UCL R</span><input type="text" id="L_uclr" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="next" autocomplete="off"></label>
+          <label class="f"><span>LCL R</span><input type="text" id="L_lclr" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="next" autocomplete="off"></label>
+        </div></div>
+      <div class="lgroup"><h3>Then the x̄ chart</h3>
+        <div class="limits">
+          <label class="f"><span>UCL x̄</span><input type="text" id="L_uclx" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="next" autocomplete="off"></label>
+          <label class="f"><span>LCL x̄</span><input type="text" id="L_lclx" inputmode="decimal" pattern="[0-9.,]*" enterkeyhint="done" autocomplete="off"></label>
+        </div></div>
+      <p class="note">Two decimals, use a period.</p>
+      <div class="row"><button class="btn primary" id="checkLimits" type="button">Check limits</button><span class="note" id="limitMsg"></span></div>
+      <div class="row">
+        <button class="btn link" id="keyLink" type="button">Show the answer key (recorded on your report)</button>
+        <button class="btn link" id="revealMR" type="button">Check my sample means and ranges</button>
+      </div>
+      <p class="note hidden" id="mrHint">Stuck? Show the station's x̄ and R in the fill log and compare row by row to find the slip.</p>
+      <div id="keyBlock" class="hidden"></div>
+      <div id="confirmCard" class="hidden"></div>
+    </div>
+  </section>
+
+  <!-- STEP 5: report -->
+  <section class="panel hidden" id="p4">
+    <header><h2 tabindex="-1">Line report</h2><span class="eyebrow">Step 5 of 5 · the reveal</span></header>
+    <div class="stack" id="revealBody"></div>
+  </section>
+
+  <!-- log -->
+  <section class="panel hidden" id="logPanel">
+    <header><h2>Fill log</h2><span class="note">n = 4 bottles per sample · mL</span></header>
+    <p class="note" id="logNote">x̄ and R stay hidden until Step 3 — compute them yourselves.</p>
+    <div class="tablewrap"><table id="log"><thead><tr><th>#</th><th>Operators</th><th>B1</th><th>B2</th><th>B3</th><th>B4</th><th>Sum</th><th>x̄</th><th>R</th><th>Call</th></tr></thead><tbody></tbody></table></div>
+    <div class="legend"><span><i style="background:var(--accent-soft)"></i>current sample</span><span><i style="background:var(--panel-2);border:1px solid var(--line)"></i>production</span><span id="legendGrade" class="hidden"><i style="background:var(--crit)"></i>red = outside the limits · outlined = baseline point outside its own limits</span></div>
+  </section>
+
+  <!-- instructor (removed from the DOM unless ?instructor) -->
+  <section class="panel" id="instr">
+    <details class="instr" open><summary>Instructor settings</summary>
+      <div class="row">
+        <label class="f"><span>Fault</span><select id="faultMode"><option value="random">Random (default)</option><option value="high">Valve drifts high</option><option value="low">Valve drifts low</option><option value="spread">Pressure surges (spread)</option><option value="none">No fault</option></select></label>
+        <label class="f"><span>Fault begins at sample</span><select id="faultAt"><option value="random">Random</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></label>
+      </div>
+      <p class="note" style="margin-top:8px">Read when production starts. Any non-random choice is printed as (forced) on the report. <span id="peek" class="mono"></span></p>
+      <div class="row">
+        <button class="btn ghost" id="simFill" type="button">Sim next fill</button>
+        <button class="btn ghost" id="simSample" type="button">Sim next sample</button>
+        <button class="btn ghost" id="simRest" type="button">Sim rest of run</button>
+        <button class="btn ghost" id="fillKey" type="button">Fill in the key</button>
+      </div>
+    </details>
+  </section>
+
+  <section class="panel">
+    <details class="instr"><summary>Danger zone</summary>
+      <div class="row" id="resetRow"><button class="btn ghost" id="resetBtn" type="button">Reset station</button></div>
+    </details>
+    <p class="foot">Readings stay on this phone if the page reloads.</p>
+  </section>
+</div>
+
+<script>
+(function(){
+'use strict';
+const RATE=100, TARGET=300, N=4, BASE=8, MON=6, SLOTS=BASE+MON;
+const A2=0.729, D3=0, D4=2.282, d2=2.059;
+const SPEC_LO=275, SPEC_HI=325;
+const HOLD_MIN=0.8, HOLD_MAX=6.0, LOCK_MS=1500, WARM_EACH=3;
+const KEY='congaree-fill-station-v2', KEY_INSTR=KEY+'-instr', KEY_PREV=KEY+'-prev';
+const qs=new URLSearchParams(location.search);
+const INSTR=location.hash==='#instructor'||qs.has('instructor');
+if(qs.has('fresh')){try{localStorage.removeItem(KEY);localStorage.removeItem(KEY_PREV);}catch(e){}}
+
+let S=null, lastUI=null, simTimer=null, lockUntil=0, lockTimer=null, simming=false;
+function fresh(){return {phase:0,team:'',section:'',roster:[],warmBy:[],warmPtr:0,warm:0,warmVals:[],samples:[],cur:[],curSec:[],curOps:[],opIdx:0,skips:0,fault:null,limits:null,
+  userLimits:null,lastTried:null,limitTries:0,limitsConfirmed:false,keyShown:false,usedKey:false,showMR:false,
+  stopAt:null,diag:null,resumed:false,done:false,blips:0,t:{},simBias:null};}
+const nOps=()=>S.roster.length;
+const opName=i=>S.roster.length?S.roster[((i%S.roster.length)+S.roster.length)%S.roster.length]:'?';
+function parseRoster(str){return str.toUpperCase().split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
+  if(o&&typeof o.phase==='number'&&Array.isArray(o.samples)&&Array.isArray(o.cur)&&o.phase>=0&&o.phase<=4)return Object.assign(fresh(),o);
+  localStorage.removeItem(KEY);}}catch(e){}return null;}
+
+const $=id=>document.getElementById(id);
+const r2=x=>Math.round(x*100)/100;
+const f2=x=>r2(x).toFixed(2);
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+const range=a=>Math.max(...a)-Math.min(...a);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function gauss(){let u=0,v=0;while(u===0)u=Math.random();while(v===0)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const buzz=p=>{try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}};
+function focusCard(key,el,block){if(!el||lastUI===key)return;lastUI=key;requestAnimationFrame(()=>{try{el.scrollIntoView({block:block||'center',behavior:'smooth'});}catch(e){el.scrollIntoView();}});}
+function mmss(ms){if(ms==null||isNaN(ms)||ms<0)return '—';const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+async function keepAwake(){try{if('wakeLock' in navigator&&S.phase>=1&&S.phase<=3&&document.visibilityState==='visible')await navigator.wakeLock.request('screen');}catch(e){}}
+
+/* ---------- statistics ---------- */
+function trueLimits(){
+  const b=S.samples.slice(0,BASE);
+  const xbb=mean(b.map(s=>mean(s.r)));
+  const rb=mean(b.map(s=>range(s.r)));
+  return {xbb, rb, uclx:xbb+A2*rb, lclx:xbb-A2*rb, uclr:D4*rb, lclr:D3*rb};
+}
+function limits2(){const L=S.limits||trueLimits();const o={};for(const k in L)o[k]=r2(L[k]);return o;}
+function sampleStats(i){const s=S.samples[i];return {m:r2(mean(s.r)),rg:range(s.r)};}
+function outX(i,L2){const m=sampleStats(i).m;return m>L2.uclx||m<L2.lclx;}
+function outR(i,L2){const rg=sampleStats(i).rg;return rg>L2.uclr||rg<L2.lclr;}
+function paperScale(L2){
+  const xStep=[5,10,20].find(s=>(L2.uclx-L2.lclx)<=12*s)||20;
+  const xMid=Math.round(L2.xbb/xStep)*xStep;
+  const rStep=[5,10,15,20,25,50].find(s=>7.5*s>=L2.uclr)||50;
+  return {xStep,xMid,rStep,xTop:xMid+10*xStep,xBot:xMid-10*xStep,rTop:14*rStep};
+}
+
+/* ---------- fault model ---------- */
+function makeFault(){
+  const L=trueLimits();
+  const el=$('faultMode'), atEl=$('faultAt');
+  const mode=el?el.value:'random', atSel=atEl?atEl.value:'random';
+  let type=mode;
+  if(mode==='random'){const u=Math.random();type=u<.35?'high':u<.60?'low':u<.90?'spread':'none';}
+  let at;
+  if(atSel!=='random')at=parseInt(atSel,10)-BASE;
+  else at=(type==='spread')?(Math.random()<.5?2:3):(Math.random()<.5?3:4);
+  const rb=Math.max(L.rb,8), xbb=Math.max(L.xbb,50);
+  const sigma=rb/d2;
+  const shift=1.25*A2*rb;   // drift = 3.75 sigma_xbar -> P(out) ~0.77 per sample; spread 2.2 sigma extra noise -> fill sd 2.42 sigma, R fires ~0.52, xbar ~0.22 per sample
+  const f={type, at, factor:1, noise:0, k:1.25, shiftML:Math.round(shift), rate:RATE, noiseSD:0, forced:(mode!=='random'||atSel!=='random')};
+  if(type==='high')f.factor=1+shift/xbb;
+  if(type==='low')f.factor=1-shift/xbb;
+  if(type==='spread'){f.noise=2.2*sigma;f.noiseSD=Math.round(f.noise);}
+  if(type==='none')f.at=null;
+  f.rate=Math.round(RATE*f.factor);
+  return f;
+}
+function applyFault(raw, monIndex){
+  const f=S.fault; if(!f||f.at==null||monIndex<f.at)return raw;
+  return Math.max(0, raw*f.factor + (f.noise?gauss()*f.noise:0));
+}
+
+/* ---------- valve ---------- */
+function setStatus(kind,text){const p=$('status');p.className='pill '+kind;$('statusText').textContent=text;}
+function readoutHTML(el,label,valueHTML){el.innerHTML='<small>'+esc(label)+'</small>'+valueHTML;}
+function bindValve(btn, onFill, onAbort){
+  let t0=null, pid=null, viaKey=false;
+  const teardown=()=>{t0=null;pid=null;viaKey=false;btn.classList.remove('open');render();};
+  const open=e=>{
+    if(btn.disabled)return;
+    if(e.pointerType==='mouse'&&e.button!==0)return;
+    if(e.isPrimary===false)return;
+    if(t0!==null){e.preventDefault();return;}
+    pid=(e.pointerId!=null)?e.pointerId:null;
+    t0=performance.now();
+    btn.classList.add('open');btn.querySelector('.big').textContent='OPEN';btn.querySelector('.sub').textContent='';
+    readoutHTML(btn.parentElement.querySelector('.readout'),'Valve','<span>FILLING</span>');
+    setStatus('run','Valve open');
+    try{if(pid!=null&&btn.setPointerCapture)btn.setPointerCapture(pid);}catch(x){}
+    e.preventDefault();
+  };
+  const close=e=>{
+    if(t0===null)return;
+    if(!viaKey&&e&&e.pointerId!=null&&pid!=null&&e.pointerId!==pid)return;
+    const sec=(performance.now()-t0)/1000;
+    teardown();
+    if(e&&e.preventDefault)e.preventDefault();
+    if(sec<HOLD_MIN){onAbort('Spill: the checkweigher rejected that bottle ('+Math.round(sec*RATE)+' mL). Fill again.',true);buzz(60);return;}
+    if(sec>HOLD_MAX){onAbort('Valve stuck open. Fill discarded, try again.',true);buzz(60);return;}
+    setStatus('idle','Weighing');buzz(25);onFill(sec);
+  };
+  const abort=msg=>{if(t0===null)return;teardown();onAbort(msg,false);};
+  btn.addEventListener('pointerdown',open);
+  btn.addEventListener('pointerup',close);
+  btn.addEventListener('pointercancel',()=>abort('Fill interrupted. Nothing recorded, try again.'));
+  btn.addEventListener('lostpointercapture',e=>{if(t0!==null&&e.pointerId===pid)abort('Fill interrupted. Nothing recorded, try again.');});
+  btn.addEventListener('contextmenu',e=>e.preventDefault());
+  btn.addEventListener('touchstart',e=>e.preventDefault(),{passive:false});
+  btn.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'||e.key===' '||e.key==='Enter'){e.preventDefault();if(t0===null){viaKey=true;open(e);}}});
+  btn.addEventListener('keyup',e=>{if(e.code==='Space'||e.code==='Enter'||e.key===' '||e.key==='Enter'){if(viaKey)close(e);}});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)abort('Screen changed while the valve was open. Nothing recorded.');});
+  window.addEventListener('pagehide',()=>abort('Fill interrupted. Nothing recorded.'));
+  window.addEventListener('pageshow',e=>{if(e.persisted)abort('Fill interrupted. Nothing recorded.');});
+  window.addEventListener('blur',()=>abort('Fill interrupted. Nothing recorded, try again.'));
+  return {simulate:sec=>{if(btn.disabled)return;btn.classList.add('open');setTimeout(()=>{btn.classList.remove('open');if(sec<HOLD_MIN||sec>HOLD_MAX){onAbort('Sim fill out of bounds, discarded.',true);}else{setStatus('idle','Weighing');onFill(sec);}},150);}};
+}
+
+/* ---------- phase transitions ---------- */
+function goPhase(p){S.phase=p;const names={1:'baseline',2:'limits',3:'production',4:'reveal'};if(names[p]&&!S.t[names[p]])S.t[names[p]]=Date.now();save();render();keepAwake();}
+function finish(){S.done=true;goPhase(4);}
+
+/* ---------- fills ---------- */
+function recordFill(sec){
+  if(S.phase!==1&&S.phase!==3)return;
+  const raw=sec*RATE;
+  const mon=S.phase===3;
+  const monIndex=mon?(S.samples.length-BASE+1):0;
+  const val=Math.round(mon?applyFault(raw,monIndex):raw);
+  S.cur.push(val);S.curSec.push(Math.round(sec*100)/100);S.curOps.push(opName(S.opIdx));
+  S.opIdx=(S.opIdx+1)%Math.max(1,nOps());
+  if(S.cur.length===N){
+    const call=(mon&&S.resumed)?'-':null;
+    S.samples.push({r:S.cur.slice(),sec:S.curSec.slice(),ops:S.curOps.slice(),mon:mon,call:call});
+    S.cur=[];S.curSec=[];S.curOps=[];
+    buzz([30,40,30]);
+    if(mon&&S.resumed&&S.samples.length-BASE>=MON){save();finish();return;}
+  }
+  if(!simming){lockUntil=performance.now()+LOCK_MS;clearTimeout(lockTimer);lockTimer=setTimeout(()=>{lockUntil=0;render();},LOCK_MS+20);}
+  save();render();
+}
+function abortMsg(readoutEl){return (msg,counts)=>{if(counts&&(S.phase===1||S.phase===3)){S.blips++;save();}readoutHTML(readoutEl,'Scale','<span class="msg">'+esc(msg)+'</span>');setStatus('idle','Fill aborted, try again');};}
+
+/* ---------- render: setup ---------- */
+function renderSetup(){
+  $('team').value=S.team;$('section').value=S.section;
+  if(document.activeElement!==$('roster'))$('roster').value=S.roster.join(' ');
+  const m=nOps();
+  const rm=$('rosterMsg');
+  if(m===0)rm.textContent='';else if(m<4)rm.textContent=m+' operator'+(m===1?'':'s')+' entered. Fewer than four cannot make a sample of four different hands: add teammates, or join the next table.';
+  else rm.textContent=m+' operators: '+S.roster.join(' → ')+' (pass the valve in this order).';
+  while(S.warmBy.length<m)S.warmBy.push(0);
+  const need=S.roster.filter((_,i)=>S.warmBy[i]<WARM_EACH);
+  const v0=$('valve0'), b0=v0.querySelector('.big'), s0=v0.querySelector('.sub');
+  v0.disabled=m<4||need.length===0;
+  if(!v0.classList.contains('open')){
+    if(m<4){b0.textContent='HOLD';s0.textContent='enter 4+ operators first';}
+    else if(need.length===0){b0.textContent='DONE';s0.textContent='warm-up complete';}
+    else{b0.textContent=opName(S.warmPtr);s0.textContent='hold ≈ 3 s, then release';}
+  }
+  if(m<4)$('warmCount').textContent='Enter your operators first.';
+  else if(need.length===0)$('warmCount').textContent='Warm-up complete: every operator has '+WARM_EACH+' practice fills.';
+  else{const nxt=S.roster[(S.warmPtr+1)%m];$('warmCount').textContent='Practicing: '+opName(S.warmPtr)+' · fill '+(S.warmBy[S.warmPtr]+1)+' of '+WARM_EACH+' · next: '+nxt;}
+  $('warmVals').textContent=S.warmVals.length?'Last practice fills: '+S.warmVals.join(' · '):'';
+  const sb=$('startBaseline');
+  sb.disabled=m<4||need.length>0;
+  sb.textContent=m<4?'Start the baseline run (enter 4+ operators)':need.length?'Start the baseline run ('+need.join(', ')+' still need practice fills)':'Start the baseline run';
+  $('startAnyway').classList.toggle('hidden',!(m>=4&&need.length>0&&S.warm>=WARM_EACH));
+  let prev=null;try{const r=localStorage.getItem(KEY_PREV);if(r)prev=JSON.parse(r);}catch(e){}
+  const pn={0:'Setup',1:'Baseline',2:'Limits',3:'Production',4:'Report'};
+  if(prev&&prev.state&&prev.state.phase>0&&(Date.now()-prev.ts)<3*3600*1000&&S.samples.length===0&&S.warm===0){
+    $('restoreWrap').classList.remove('hidden');
+    $('restoreBtn').textContent='Restore previous shift ('+pn[prev.state.phase]+', sample '+prev.state.samples.length+')';
+    $('restoreBtn').onclick=()=>{S=Object.assign(fresh(),prev.state);save();render();};
+  }else $('restoreWrap').classList.add('hidden');
+}
+
+/* ---------- render: run ---------- */
+function renderRun(){
+  const mon=S.phase===3;
+  $('runTitle').textContent=mon?'Production run':'Baseline run';
+  $('runStep').textContent=mon?'Step 4 of 5 · Production':'Step 2 of 5 · Baseline';
+  $('runLead').innerHTML=mon
+    ?'Shipping starts now: <b>6 more samples of 4</b>. Trays are weighed at the end of the line, so the readings appear after the 4th fill. Operators: hold for what feels like 3.0 s, every time. You are the valve, not the controller. After each sample the recorder writes the row, the plotter puts x̄ and R on page 2, the caller reads them against the limits and says the call out loud. Then the team taps. A stopped line is expensive; so is shipping bad bottles.'
+    :'<b>8 samples of 4 bottles.</b> Pass the valve after every bottle. Recorder: copy each sample into worksheet section A when its four readings appear.';
+  $('runNote').textContent=mon?'':'Each sample mixes four operators on purpose (a rational subgroup): differences between people become part of the normal spread inside a sample, so the only thing that can move a sample mean is the valve.';
+  const total=mon?MON:BASE, doneSamples=S.samples.length-(mon?BASE:0);
+  const lastS=S.samples[S.samples.length-1];
+  const awaitingCall=mon&&S.cur.length===0&&doneSamples>0&&!!lastS&&lastS.mon&&lastS.call==null&&!S.done;
+  const awaitingDiag=mon&&!!lastS&&lastS.call==='stop'&&S.diag==null&&!S.done;
+  const awaitingRestart=mon&&S.stopAt!=null&&S.diag!=null&&!S.resumed&&doneSamples<MON&&!S.done;
+  const runOver=doneSamples>=total;
+  const locked=performance.now()<lockUntil;
+  const v=$('valve');
+  v.disabled=awaitingCall||awaitingDiag||awaitingRestart||runOver||locked;
+  const big=v.querySelector('.big'), sub=v.querySelector('.sub');
+  if(!v.classList.contains('open')){
+    if(awaitingCall){big.textContent='CALL IT';sub.textContent='plot it, then keep or stop';}
+    else if(awaitingDiag||awaitingRestart){big.textContent='WAIT';sub.textContent='line stopped';}
+    else if(runOver){big.textContent='DONE';sub.textContent=mon?'shift over':'baseline complete';}
+    else if(locked){big.textContent=opName(S.opIdx);sub.textContent='pass the valve';}
+    else{big.textContent=opName(S.opIdx);sub.textContent='hold · valve open while pressed';}
+  }
+  const idx=S.samples.length+1;
+  $('nLeft').textContent=Math.max(0,total*N-doneSamples*N-S.cur.length);
+  const strip=$('opStrip');
+  if(runOver){strip.classList.add('hidden');}
+  else{strip.classList.remove('hidden');
+    $('opMain').innerHTML='Sample <b>'+Math.min(idx,SLOTS)+'</b> · bottle <b>'+(S.cur.length+1)+' of 4</b>';
+    $('opWho').innerHTML='filling: <b>'+esc(opName(S.opIdx))+'</b> · next: '+esc(opName(S.opIdx+1));
+    const sk=$('skipOp');sk.textContent='skip ('+opName(S.opIdx)+' is not at the table)';sk.disabled=v.disabled&&!locked;
+    sk.onclick=()=>{S.opIdx=(S.opIdx+1)%Math.max(1,nOps());S.skips++;save();render();};}
+  // fills cells: current tray as dots; when a tray just completed and nothing new started, show its four numbers
+  const cells=$('fills');
+  let html='';
+  if(S.cur.length===0&&lastS&&(!mon||lastS.mon)&&doneSamples>0){
+    lastS.r.forEach((val,i)=>{html+='<div class="has"><small>sample '+S.samples.length+'</small>'+val+'</div>';});
+  }else{
+    for(let i=0;i<N;i++)html+='<div class="'+(S.cur[i]!=null?'has':'')+'"><small>bottle '+(i+1)+'</small>'+(S.cur[i]!=null?'●':'·')+'</div>';
+  }
+  cells.innerHTML=html;
+  // last tray line
+  const lt=$('lastTray');
+  if(S.cur.length>0&&lastS&&(!mon||lastS.mon)&&doneSamples>0)lt.textContent='Last tray · sample '+S.samples.length+': '+lastS.r.join(' · ');
+  else lt.textContent='';
+  // readout (re-derived from state unless the valve is open)
+  const ro=$('readout');
+  if(!v.classList.contains('open')&&!ro.querySelector('.msg')){
+    if(awaitingCall)readoutHTML(ro,'Sample '+S.samples.length+' logged','<span class="tray">make the call</span>');
+    else if(awaitingDiag)readoutHTML(ro,'Line stopped','<span class="tray">diagnose it</span>');
+    else if(S.cur.length>0)readoutHTML(ro,'Scale','<span class="tray">Tray: '+S.cur.length+' of 4 filled</span>');
+    else if(lastS&&doneSamples>0&&(!mon||lastS.mon))readoutHTML(ro,'Tray weighed · sample '+S.samples.length,'<span class="tray">'+lastS.r.join(' · ')+'</span>');
+    else readoutHTML(ro,'Scale','<span>---</span>');
+  }
+  // cards
+  const cw=$('callWrap');
+  cw.classList.toggle('hidden',!(awaitingCall||awaitingDiag||awaitingRestart));
+  if(awaitingCall)renderCall(cw);
+  else if(awaitingDiag)renderDiag(cw);
+  else if(awaitingRestart)renderRestart(cw);
+  const rd=$('runDone');rd.innerHTML='';
+  if(!mon&&doneSamples>=BASE){
+    rd.className='callbox';
+    rd.innerHTML='<div><span class="eyebrow">Baseline complete</span><p class="lead">8 samples logged. Recorder: check that section A has all 32 readings.</p></div><div class="row"><button class="btn primary" id="toLimits" type="button">Go to Step 3: set the limits</button></div>';
+    $('toLimits').onclick=()=>{S.limits=trueLimits();goPhase(2);};
+    focusCard('basedone',rd,'center');
+  }else rd.className='';
+  if(awaitingCall)focusCard('call:'+S.samples.length,cw,'center');
+  if(awaitingDiag)focusCard('diag',cw,'center');
+  if(awaitingRestart)focusCard('restart',cw,'center');
+}
+function renderCall(cw){
+  const k=S.samples.length, last=S.samples[k-1], st=sampleStats(k-1);
+  const lastOne=(k-BASE)>=MON;
+  cw.className='callbox';
+  cw.innerHTML='<div><span class="eyebrow">Sample '+k+' logged</span><p class="lead">Bottles <b class="mono">'+last.r.join(' · ')+'</b> mL — x̄ <b class="mono">'+f2(st.m)+'</b>, R <b class="mono">'+st.rg+'</b></p><p class="lead">Plot both points on page 2 and read them against your limits. Then decide together:</p></div>'
+    +'<div class="row"><button class="btn" id="keepBtn" type="button">'+(lastOne?'In control — end the shift':'In control — keep running')+'</button><button class="btn danger" id="stopBtn" type="button">Stop the line</button></div>';
+  $('keepBtn').onclick=()=>{last.call='keep';save();if(lastOne)finish();else render();};
+  $('stopBtn').onclick=()=>{last.call='stop';S.stopAt=k;buzz([80,50,80]);setStatus('stop','Line stopped');save();render();};
+}
+function renderDiag(cw){
+  cw.className='callbox';
+  cw.innerHTML='<div><span class="eyebrow">Line stopped at sample '+S.stopAt+'</span><p class="lead">Before you look under the hood: what do your charts say happened?</p></div>'
+   +'<div class="row"><button class="btn" data-d="high" type="button">Mean shifted up</button><button class="btn" data-d="low" type="button">Mean shifted down</button><button class="btn" data-d="spread" type="button">Spread increased</button><button class="btn" data-d="both" type="button">Both mean and spread</button><button class="btn ghost" data-d="unsure" type="button">Not sure</button><button class="btn ghost" data-d="back" type="button">Wait — keep running instead</button></div>';
+  cw.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    if(b.dataset.d==='back'){const last=S.samples[S.samples.length-1];last.call=null;S.stopAt=null;save();render();return;}
+    S.diag=b.dataset.d;save();
+    if(S.samples.length-BASE>=MON)finish();else render();
+  });
+}
+function renderRestart(cw){
+  cw.className='callbox';
+  cw.innerHTML='<div><span class="eyebrow">Line stopped at sample '+S.stopAt+' and logged</span><p class="lead">Maintenance is on the way. Keep filling the remaining samples so your charts show the whole shift; plot each one. No more calls are needed.</p></div>'
+   +'<div class="row"><button class="btn primary" id="restartBtn" type="button">Restart the line</button><button class="btn ghost" id="endBtn" type="button">End the shift here</button></div>';
+  $('restartBtn').onclick=()=>{S.resumed=true;save();render();};
+  $('endBtn').onclick=()=>finish();
+}
+
+/* ---------- render: limits ---------- */
+const LIDS={xbb:'L_xbb',rb:'L_rb',uclr:'L_uclr',lclr:'L_lclr',uclx:'L_uclx',lclx:'L_lclx'};
+const LTOL={xbb:.06,rb:.06,uclx:.6,lclx:.6,uclr:.6,lclr:.6};
+function readVals(){const v={};for(const k in LIDS){const s=$(LIDS[k]).value.trim().replace(',','.');v[k]=s===''?null:parseFloat(s);if(v[k]!=null&&isNaN(v[k]))v[k]=null;}return v;}
+function gradeLimits(vals){const L=S.limits||trueLimits();const per={};let all=true;for(const k in LIDS){per[k]=vals[k]!=null&&Math.abs(vals[k]-L[k])<=LTOL[k];if(!per[k])all=false;}return {all,per};}
+function badge(k,cls,text){const lab=$(LIDS[k]).parentElement;lab.querySelectorAll('.ok,.bad,.blank,.dep').forEach(x=>x.remove());if(cls){const m=document.createElement('span');m.className=cls;m.textContent=text;lab.appendChild(m);}}
+function paintLimits(res,msg){
+  const cascade=!res.per.rb||!res.per.xbb;
+  for(const k in LIDS){
+    if(res.per[k])badge(k,'ok','ok');
+    else if(cascade&&['uclx','lclx','uclr','lclr'].includes(k)&&!( (k==='uclx'||k==='lclx')&&res.per.xbb&&res.per.rb ))badge(k,'dep','depends');
+    else badge(k,'bad','no');
+  }
+  $('limitMsg').textContent=msg||'';
+}
+function unlockAssist(){return S.limitTries>=1||(S.t.limits&&(Date.now()-S.t.limits)>=300000);}
+function checkLimits(){
+  const vals=readVals();
+  const blanks=Object.keys(vals).filter(k=>vals[k]==null);
+  if(blanks.length){for(const k in LIDS)badge(k,vals[k]==null?'blank':null,'blank');$('limitMsg').textContent='Fill in all six numbers first.';return;}
+  if(S.lastTried&&Object.keys(vals).every(k=>vals[k]===S.lastTried[k])){$('limitMsg').textContent='Same numbers as last time — change something before checking again.';return;}
+  S.limitTries++;S.lastTried=vals;S.userLimits=vals;
+  const res=gradeLimits(vals);
+  if(res.all){S.limitsConfirmed=true;if(S.keyShown)S.usedKey=true;buzz([30,40,30]);}
+  else if(S.limitTries>=3)S.keyShown=true;
+  save();
+  let msg='';
+  if(!res.all){
+    msg='Not yet. Recheck the flagged values.';
+    if(!res.per.rb)msg='R̄ is off, so the four limits built on it will be off too. Fix R̄ first.';
+    else if(!res.per.xbb)msg='x̿ is off, so both x̄ limits will be off too. Fix x̿ first.';
+    if(S.limitTries>=2)msg+=' Common slips: subtracting for the UCL, dividing the ranges by 4 instead of 8, or mixing up A2 and D4.';
+  }
+  paintLimits(res,msg);
+  renderLimits();
+  if(res.all)focusCard('confirmed',$('confirmCard'),'center');
+}
+function renderLimits(){
+  if(S.userLimits){for(const k in LIDS){const el=$(LIDS[k]);if(el.value===''&&S.userLimits[k]!=null)el.value=S.userLimits[k];}}
+  if(S.userLimits&&S.limitTries>0&&!$('limitMsg').textContent){paintLimits(gradeLimits(S.userLimits),'');}
+  const unlocked=unlockAssist();
+  $('keyLink').disabled=!unlocked||S.keyShown;
+  $('revealMR').disabled=!unlocked||S.showMR;
+  $('revealMR').textContent=S.showMR?'x̄ and R are now shown in the fill log ↓':(unlocked?'Check my sample means and ranges':'Check my sample means and ranges (unlocks after your first limits check)');
+  $('mrHint').classList.toggle('hidden',!(unlocked&&!S.showMR&&S.limitTries>0&&!S.limitsConfirmed));
+  const L2=limits2();
+  const kb=$('keyBlock');
+  if(S.keyShown||S.usedKey){
+    kb.classList.remove('hidden');kb.className='keyblock';
+    kb.innerHTML='<span class="eyebrow">Answer key (write KEY in the attempts blank, section B)</span>'
+      +'<div class="mono">x̿ '+f2(L2.xbb)+' · R̄ '+f2(L2.rb)+'</div><div class="mono">UCL R '+f2(L2.uclr)+' · LCL R '+f2(L2.lclr)+'</div><div class="mono">UCL x̄ '+f2(L2.uclx)+' · LCL x̄ '+f2(L2.lclx)+'</div>'
+      +(S.usedKey||S.limitsConfirmed?'':'<div class="row"><button class="btn" id="useKey" type="button">Use the key and continue</button></div>');
+    const uk=$('useKey');if(uk)uk.onclick=()=>{S.usedKey=true;save();renderLimits();focusCard('confirmed',$('confirmCard'),'center');};
+  }else{kb.classList.add('hidden');kb.innerHTML='';}
+  const cc=$('confirmCard');
+  if(S.limitsConfirmed||S.usedKey){
+    const ps=paperScale(L2);
+    const bo=[];for(let i=0;i<Math.min(BASE,S.samples.length);i++)if(outX(i,L2)||outR(i,L2))bo.push(i+1);
+    cc.classList.remove('hidden');cc.className='verdict good';
+    cc.innerHTML='<span class="eyebrow">'+(S.usedKey?'Key used · write KEY in section B':'Limits confirmed on attempt '+S.limitTries+' · write '+S.limitTries+' in section B')+'</span>'
+      +'<h2>Line 4 cleared for production</h2><p class="lead">'+(S.usedKey?'Use the key values above.':'Your limits match the plant\'s.')+'</p>'
+      +'<div class="scalebox"><b>Chart scale (page 2).</b><br>x̄ chart: middle gridline = <b>'+ps.xMid+'</b>, each gridline = <b>'+ps.xStep+' mL</b> (top '+ps.xTop+', bottom '+ps.xBot+').<br>R chart: bottom = 0, each gridline = <b>'+ps.rStep+' mL</b> (top '+ps.rTop+').<br>Label every other gridline.</div>'
+      +'<p class="lead"><b>Before production (worksheet page 2):</b></p><ol class="steps-list"><li>Draw CL solid, UCL and LCL dashed, on both charts.</li><li>Plot samples 1–8. Usually all eight are inside on both charts.'+(bo.length?' <b>Baseline sample'+(bo.length>1?'s ':' ')+bo.join(', ')+' '+(bo.length>1?'are':'is')+' outside your trial limits.</b> On a real line you would look for a cause and recompute without it; here, circle it on the worksheet and continue.':' If one is not, circle it and keep going; the reveal will say why.')+'</li><li>Then pick a <b>plotter</b> (page 2) and a <b>caller</b>, and tap below.</li></ol>'
+      +'<div class="row"><button class="btn primary" id="startMonitor" type="button">We\'ve plotted the baseline — start production</button></div>';
+    $('startMonitor').onclick=()=>{S.fault=makeFault();S.opIdx=0;goPhase(3);};
+  }else{cc.classList.add('hidden');cc.innerHTML='';}
+  if(INSTR)renderPeek();
+}
+
+/* ---------- log ---------- */
+function renderLog(){
+  const lp=$('logPanel');
+  const any=S.samples.length||S.cur.length;
+  lp.classList.toggle('hidden',!any);
+  if(!any)return;
+  const tw=lp.querySelector('.tablewrap');const sl=tw.scrollLeft;
+  const tb=$('log').tBodies[0];tb.innerHTML='';
+  const grade=S.phase===4;
+  const L2=limits2();
+  const showMR=S.showMR||S.phase>=3;
+  $('logNote').classList.toggle('hidden',S.phase>=3||S.showMR);
+  $('legendGrade').classList.toggle('hidden',!grade);
+  S.samples.forEach((s,i)=>{
+    const tr=document.createElement('tr');tr.className=s.mon?'mon':'';
+    const st=sampleStats(i), sum=s.r.reduce((a,b)=>a+b,0);
+    const pending=S.phase===3&&i===S.samples.length-1&&s.mon&&s.call==null;
+    const ocx=grade&&outX(i,L2), ocr=grade&&outR(i,L2);
+    const cx=ocx?(s.mon?'oc':'ocb'):'', cr=ocr?(s.mon?'oc':'ocb'):'';
+    const call=s.call==='stop'?'STOP':s.call==='keep'?'keep':s.call==='-'?'—':'';
+    const show=showMR&&!pending;
+    tr.innerHTML='<td>'+(i+1)+'</td><td class="hid">'+esc((s.ops||[]).join(' '))+'</td>'+s.r.map(v=>'<td>'+v+'</td>').join('')
+      +'<td class="'+(show?'':'hid')+'">'+(show?sum:(pending?'…':'?'))+'</td>'
+      +'<td class="'+cx+(show?'':' hid')+'">'+(show?f2(st.m):(pending?'…':'?'))+'</td><td class="'+cr+(show?'':' hid')+'">'+(show?st.rg:(pending?'…':'?'))+'</td><td>'+call+'</td>';
+    tb.appendChild(tr);
+  });
+  if(S.cur.length&&S.phase!==4){
+    const tr=document.createElement('tr');tr.className='cur';
+    tr.innerHTML='<td>'+(S.samples.length+1)+'</td><td class="hid">'+esc(S.curOps.join(' '))+'</td>'+[0,1,2,3].map(i=>'<td>'+(S.cur[i]!=null?'●':'·')+'</td>').join('')+'<td class="hid">…</td><td class="hid">…</td><td class="hid">…</td><td></td>';
+    tb.appendChild(tr);
+  }
+  tw.scrollLeft=sl;
+}
+
+/* ---------- charts ---------- */
+function chartSVG(title, vals, cl, ucl, lcl, o){
+  const narrow=matchMedia('(max-width:640px)').matches;
+  const W=narrow?420:860, H=narrow?300:250, FS=narrow?17:11, ml=narrow?72:58, mr=16, mt=narrow?36:28, mb=narrow?40:34, R=narrow?6:4.5;
+  const n=vals.length, step=o.step||10;
+  const lo=Math.min(lcl,...vals), hi=Math.max(ucl,...vals);
+  let y0=Math.floor((lo-step/2)/step)*step; if(o.floor!=null)y0=Math.max(o.floor,y0);
+  let y1=Math.ceil((hi+step/2)/step)*step; if(y1<=y0)y1=y0+step;
+  const stepX=(W-ml-mr)/(SLOTS-1);
+  const X=i=>ml+i*stepX;
+  const Y=v=>mt+(y1-v)*(H-mt-mb)/(y1-y0);
+  let s='<svg class="chart" viewBox="0 0 '+W+' '+H+'" style="font-size:'+FS+'px" role="img" aria-label="'+esc(title)+'">';
+  s+='<text class="ttl" x="'+ml+'" y="16">'+esc(title)+'</text>';
+  const lines=Math.round((y1-y0)/step); const every=lines>8?2:1;
+  for(let k=0;k<=lines;k++){const v=y0+k*step;s+='<line class="grid" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'"/>';if(k%every===0)s+='<text x="'+(ml-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v.toFixed(0)+'</text>';}
+  if(o.faultAt&&o.faultAt<=n){const xf=X(o.faultAt-1)-stepX/2;s+='<rect class="fault-band" x="'+xf+'" y="'+mt+'" width="'+(W-mr-xf)+'" height="'+(H-mt-mb)+'"/><line class="fault" x1="'+xf+'" x2="'+xf+'" y1="'+mt+'" y2="'+(H-mb)+'"/><text class="lab" x="'+(xf+5)+'" y="'+(mt+12)+'">fault begins</text>';}
+  else if(o.faultAt){s+='<text class="lab" x="'+(W-mr)+'" y="16" text-anchor="end">'+(narrow?'fault due at sample ':'fault would have begun at sample ')+o.faultAt+'</text>';}
+  s+='<line class="axis" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+(H-mb)+'" y2="'+(H-mb)+'"/>';
+  const lbl=(v,cls,text,below)=>{let y=Y(v)-4;if(below)y=Y(v)+FS+1;return '<text class="'+cls+'" x="'+(ml+4)+'" y="'+y+'">'+text+'</text>';};
+  s+='<line class="cl" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+Y(cl)+'" y2="'+Y(cl)+'"/>';
+  s+='<line class="lim" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+Y(ucl)+'" y2="'+Y(ucl)+'"/>';
+  s+='<line class="lim" x1="'+ml+'" x2="'+(W-mr)+'" y1="'+Y(lcl)+'" y2="'+Y(lcl)+'"/>';
+  s+=lbl(ucl,'liml','UCL '+f2(ucl));
+  s+=lbl(cl,'cll','CL '+f2(cl), Math.abs(Y(ucl)-Y(cl))<15);
+  s+=lbl(lcl,'liml','LCL '+f2(lcl), true);
+  const xd=X(BASE-1)+stepX/2; s+='<line class="axis" x1="'+xd+'" x2="'+xd+'" y1="'+mt+'" y2="'+(H-mb)+'"/><text x="'+(xd-4)+'" y="'+(H-mb+14)+'" text-anchor="end">baseline</text><text x="'+(xd+4)+'" y="'+(H-mb+14)+'">production</text>';
+  for(let i=0;i<SLOTS;i++)s+='<text x="'+X(i)+'" y="'+(H-mb+(narrow?28:26))+'" text-anchor="middle">'+(i+1)+'</text>';
+  s+='<polyline class="ln" points="'+vals.map((v,i)=>X(i)+','+Y(v)).join(' ')+'"/>';
+  vals.forEach((v,i)=>{
+    const oc=o.out[i], base=i<BASE, kept=o.keptOut.includes(i+1);
+    const cls='pt'+(oc?(base?' ocb':' oc'):'');
+    if(base)s+='<circle class="'+cls+'" cx="'+X(i)+'" cy="'+Y(v)+'" r="'+R+'"/>';
+    else s+='<rect class="'+cls+'" x="'+(X(i)-R)+'" y="'+(Y(v)-R)+'" width="'+(2*R)+'" height="'+(2*R)+'"/>';
+    if(kept&&oc)s+='<circle class="ring" cx="'+X(i)+'" cy="'+Y(v)+'" r="'+(R+4)+'"/>';
+    if(o.firstOutIdx===i)s+='<text class="lab c" x="'+X(i)+'" y="'+(Y(v)-R-6)+'" text-anchor="middle">first signal</text>';
+  });
+  if(o.stopAt){const end=(o.stopAt-1)>=SLOTS-2;s+='<line class="stopm" x1="'+X(o.stopAt-1)+'" x2="'+X(o.stopAt-1)+'" y1="'+mt+'" y2="'+(H-mb)+'"/><text class="lab s" x="'+(X(o.stopAt-1)-(end?4:0))+'" y="'+(H-mb-6)+'" text-anchor="'+(end?'end':'middle')+'">stopped</text>';}
+  s+='</svg>';return s;
+}
+
+/* ---------- reveal ---------- */
+function analyze(){
+  const L2=limits2(), f=S.fault||{type:'none',at:null};
+  const n=S.samples.length;
+  const means=[],ranges=[],ox=[],orr=[],sig=[];
+  for(let i=0;i<n;i++){const st=sampleStats(i);means.push(st.m);ranges.push(st.rg);ox.push(outX(i,L2));orr.push(outR(i,L2));sig.push(ox[i]||orr[i]);}
+  const faultSample=f.at?BASE+f.at:null;
+  const prod=i=>i>=BASE;
+  let firstOut=null;for(let i=BASE;i<n;i++)if(sig[i]){firstOut=i+1;break;}
+  let firstOutAfterFault=null;if(faultSample)for(let i=faultSample-1;i<n;i++)if(sig[i]){firstOutAfterFault=i+1;break;}
+  const stop=S.stopAt||null;
+  const stopWasOut=stop?sig[stop-1]:false;
+  const keptOut=[];for(let i=BASE;i<n;i++)if(sig[i]&&S.samples[i].call==='keep')keptOut.push(i+1);
+  let shipped=0;if(faultSample)for(let i=faultSample-1;i<n;i++)if(S.samples[i].call==='keep')shipped++;
+  const baseOut={x:[],r:[]};for(let i=0;i<Math.min(BASE,n);i++){if(ox[i])baseOut.x.push(i+1);if(orr[i])baseOut.r.push(i+1);}
+  const xOut=[],rOut=[];for(let i=BASE;i<n;i++){if(ox[i])xOut.push(i+1);if(orr[i])rOut.push(i+1);}
+  const chartAt=k=>{const i=k-1;return ox[i]&&orr[i]?'both':ox[i]?'x̄':'R';};
+  const which=k=>{const i=k-1;if(ox[i])return {chart:'x̄',value:f2(means[i]),above:means[i]>L2.uclx,limit:means[i]>L2.uclx?'UCL':'LCL',lim:f2(means[i]>L2.uclx?L2.uclx:L2.lclx)};return {chart:'R',value:String(ranges[i]),above:true,limit:'UCL',lim:f2(L2.uclr)};};
+  return {L2,f,n,means,ranges,ox,orr,sig,faultSample,firstOut,firstOutAfterFault,stop,stopWasOut,keptOut,shipped,baseOut,xOut,rOut,chartAt,which};
+}
+const FAULTNAME={high:'the valve drifted HIGH (over-filling)',low:'the valve drifted LOW (under-filling)',spread:'supply pressure began surging (fills became erratic)',none:'nothing changed'};
+const DIAGNAME={high:'mean shifted up',low:'mean shifted down',spread:'spread increased',both:'both mean and spread',unsure:'not sure'};
+function verdict(a){
+  const {f,faultSample,firstOutAfterFault,stop,stopWasOut,keptOut,shipped,n}=a;
+  const fs=faultSample;
+  let cls='good',head='',body='',outcome='',qual='';
+  const later=stop&&fs&&stop<fs;
+  if(fs&&stop&&stop>=fs){
+    if(stopWasOut){
+      if(firstOutAfterFault===stop){
+        const w=a.which(stop);const lag=stop-fs;
+        cls='good';head='Caught it.';outcome='caught it (on signal)';qual='on signal';
+        body='Sample '+stop+'\'s '+w.chart+' ('+w.value+') was '+(w.above?'above':'below')+' your '+w.limit+' ('+w.lim+') and you stopped, '+(lag===0?'on the very first faulty sample.':lag+' sample'+(lag>1?'s':'')+' after the first faulty one: the fault began at sample '+fs+' but the chart could not see it until now. Small shifts hide longer.')+' The rule worked.';
+      }else{
+        const w=a.which(firstOutAfterFault);
+        cls='amber';head='Caught it, late.';outcome='caught it (late)';qual='late';
+        body='Sample '+firstOutAfterFault+'\'s '+w.chart+' ('+w.value+') was already '+(w.above?'above':'below')+' your '+w.limit+' and you kept running; you stopped at sample '+stop+'. Every faulty sample you ship is the Type II cost: '+shipped+' went on the truck.';
+      }
+    }else{
+      const i=stop-1;
+      cls='amber';head='Caught it, on a hunch.';outcome='caught it (no signal)';qual='on a hunch';
+      body='Nothing was outside when you stopped at sample '+stop+' (x̄ '+f2(a.means[i])+' vs '+f2(a.L2.lclx)+'–'+f2(a.L2.uclx)+'; R '+a.ranges[i]+' vs '+f2(a.L2.uclr)+'). '
+        +(S.resumed?(firstOutAfterFault?'After you restarted, the first point outside was sample '+firstOutAfterFault+'. ':'After you restarted, no point crossed a limit. '):'You stopped before any point crossed a limit; the fault began at sample '+fs+', so the chart had not seen it yet. ')
+        +'Right this time, but a stop without a signal is a coin flip. If you saw a pattern, name it in section D: that is a run rule, a real rule, just not the one we used today.';
+    }
+  }else if(stop){
+    const i=stop-1;
+    if(stopWasOut){
+      const w=a.which(stop);
+      cls='amber';head='False alarm, and the right call.';outcome='false alarm (on signal)';qual='on signal';
+      body='Sample '+stop+'\'s '+w.chart+' ('+w.value+') was '+(w.above?'above':'below')+' your '+w.limit+' ('+w.lim+'); stopping to investigate is exactly what the chart tells you to do. The valve was fine: chance, or a fill from someone still learning the valve, an assignable cause, just not the one we planted. That is the Type I cost of using limits: with limits built from only 8 samples a point lands outside by chance about once in 50 samples (the textbook\'s 3 in 1,000 assumes exact limits). '
+        +(fs?'The real fault began at sample '+fs+', after your stop.'+(S.resumed&&firstOutAfterFault?' After you restarted, sample '+firstOutAfterFault+'\'s '+a.chartAt(firstOutAfterFault)+' went outside.':''):'Nothing was ever wrong with the valve.');
+    }else{
+      cls='crit';head='False alarm, on a hunch.';outcome='false alarm (no signal)';qual='on a hunch';
+      body='Nothing was outside at sample '+stop+' (x̄ '+f2(a.means[i])+' vs '+f2(a.L2.lclx)+'–'+f2(a.L2.uclx)+'; R '+a.ranges[i]+' vs '+f2(a.L2.uclr)+'). The chart said keep running. Stopping an in-control process is a Type I error, and the chart did not cause it. '
+        +(fs?'The real fault began at sample '+fs+'.'+(S.resumed&&firstOutAfterFault?' After you restarted, sample '+firstOutAfterFault+'\'s '+a.chartAt(firstOutAfterFault)+' went outside.':''):'Nothing was wrong with the valve.');
+    }
+  }else if(fs){
+    if(firstOutAfterFault){
+      const w=a.which(firstOutAfterFault);
+      const others=keptOut.filter(k=>k>firstOutAfterFault);
+      cls='crit';head='Missed it.';outcome='missed it (on signal)';qual='on signal';
+      body='Sample '+firstOutAfterFault+'\'s '+w.chart+' ('+w.value+') was '+(w.above?'above':'below')+' your '+w.limit+' ('+w.lim+') and you kept running'+(others.length?'; so '+(others.length>1?'were samples ':'was sample ')+others.join(', '):'')+'. The chart signaled; the call was wrong. Letting an out-of-control process run is a Type II error: '+shipped+' faulty sample'+(shipped===1?'':'s')+' shipped.';
+    }else{
+      const idx=[];for(let i=fs-1;i<n;i++)idx.push(i);
+      let side='';
+      if(f.type==='spread'){const all=idx.every(i=>a.ranges[i]>a.L2.rb);side='samples '+idx.map(i=>i+1).join(', ')+(all?' all sit':' mostly sit')+' above R̄.';}
+      else{const up=f.type==='high';const all=idx.every(i=>up?a.means[i]>a.L2.xbb:a.means[i]<a.L2.xbb);side='samples '+idx.map(i=>i+1).join(', ')+(all?' all sit ':' mostly sit ')+(up?'above':'below')+' the center line.';}
+      cls='amber';head='The chart missed it.';outcome='missed it (no signal)';qual='no signal';
+      body=FAULTNAME[f.type].charAt(0).toUpperCase()+FAULTNAME[f.type].slice(1)+' from sample '+fs+', but no point crossed a limit, so by the one-point rule every call you made was correct, and the process was still out of control. That is a Type II error, and it belongs to the chart, not to you. A fault this size slips past 3-sigma limits in a run this short about '+(f.type==='spread'?'1 in 50':'1 in 100')+'. Look at the pattern on your chart: '+side;
+    }
+  }else{
+    cls='blue';head='Clean shift.';outcome='clean shift (no signal)';qual='no signal';
+    body='Nothing changed on the line and you kept it running. Correct call. Six operators, one valve, nobody touched anything, and the means still moved: that is common-cause variation, and your limits held it.';
+    if(keptOut.length){cls='amber';outcome='clean shift (kept a signal)';qual='on signal';}
+  }
+  // kept-signal caution (any branch except missed/late which already say it)
+  const cautionPts=keptOut.filter(k=>k!==firstOutAfterFault&&(!fs||k<fs||head==='Clean shift.'||head==='Caught it.'||head.startsWith('False alarm')));
+  let caution='';
+  if(cautionPts.length&&!head.startsWith('Missed')&&head!=='Caught it, late.'){
+    const k=cautionPts[0];const w=a.which(k);
+    caution=' One caution: sample '+k+'\'s '+w.chart+' was outside your limit and you kept running. '+(fs&&k>=fs?'':'Nothing was wrong that time, but ')+'one point out means investigate, every time; the rule does not know when the process is fine.';
+  }
+  return {cls,head,body:body+caution,outcome,qual};
+}
+function diagnosisLine(a){
+  if(!a.stop||!S.diag)return {text:'',grade:'—'};
+  const truth=a.f.type, d=S.diag;
+  const dn=DIAGNAME[d];
+  if(truth==='none')return {text:'Your diagnosis: '+dn+'. There was no fault to diagnose: the point that stopped you was chance, or a fill from someone still learning the valve.',grade:'—'};
+  if(d===truth)return {text:'Your diagnosis: '+dn+'. Correct: that is exactly the fault.',grade:'correct'};
+  const xFired=a.xOut.some(k=>k>=a.faultSample);
+  if(truth==='spread'&&d==='both')return {text:'Your diagnosis: '+dn+'. '+(xFired?'Correct enough: the spread grew and it dragged x̄ points out too.':'Close: the spread grew; the x̄ points stayed inside. Check your x̄ chart.'),grade:'partly'};
+  if((truth==='high'||truth==='low')&&d==='both')return {text:'Your diagnosis: '+dn+'. Half right: the mean shifted '+(truth==='high'?'up':'down')+'; the R chart stayed quiet. Check it.',grade:'partly'};
+  if(d==='unsure')return {text:'Your diagnosis: not sure. Rule of thumb: only the x̄ chart moved, the mean shifted; the R chart jumped, the spread grew (and it may drag x̄ points out too). Look at your two charts: which was it? Write it in section D.',grade:'not sure'};
+  if((truth==='high'&&d==='low')||(truth==='low'&&d==='high'))return {text:'Your diagnosis: '+dn+'. The mean moved the other way: look at which side of the center line the red points sit.',grade:'wrong'};
+  return {text:'Your diagnosis: '+dn+'. The actual fault was '+FAULTNAME[truth]+'. '+(truth==='spread'?'A spread fault shows on the R chart first, but wide swings often push an x̄ point out too.':'A mean shift shows on the x̄ chart while the R chart stays quiet.'),grade:'wrong'};
+}
+let roomData=null;
+function renderReveal(){
+  const a=analyze(), v=verdict(a), dg=diagnosisLine(a), L2=a.L2, f=a.f, fs=a.faultSample;
+  const firstSig=a.firstOut?(a.chartAt(a.firstOut)+' chart at sample '+a.firstOut).replace('both chart','both'):'none';
+  const lag=(a.stop&&fs&&a.stop>=fs)?(a.stop-fs):null;
+  const ev='Fault began:         '+(fs?'sample '+fs+' ('+(f.type==='spread'?'pressure surge':'valve '+f.type)+')':'none')
+    +'\nFirst point outside: '+(a.firstOut?'sample '+a.firstOut+', '+a.chartAt(a.firstOut):'none')
+    +'\nYou stopped:         '+(a.stop?'sample '+a.stop:'never')
+    +'\nDelay:               '+(lag!=null?lag+' sample'+(lag===1?'':'s'):'—');
+  let faultLine='';
+  if(fs){faultLine=(f.type==='spread')?'From sample '+fs+' the bottle-to-bottle spread was about 2.4× the baseline; the mean did not move.':'Valve rate 100 → '+f.rate+' mL/s from sample '+fs+': about '+(f.type==='high'?'+':'−')+f.shiftML+' mL per bottle, 1.25 × A2·R̄, the half-width of your x̄ limits.';if(f.forced)faultLine+=' (forced)';}
+  else if(f.forced)faultLine='No fault (forced).';
+  const ps=paperScale(L2);
+  const o={faultAt:fs,stopAt:a.stop,keptOut:a.keptOut,firstOutIdx:a.firstOut?a.firstOut-1:-1};
+  const rSVG=chartSVG('1 · R chart (mL)',a.ranges,L2.rb,L2.uclr,L2.lclr,Object.assign({out:a.orr,floor:0,step:ps.rStep},o));
+  const xSVG=chartSVG('2 · x̄ chart (mL)',a.means,L2.xbb,L2.uclx,L2.lclx,Object.assign({out:a.ox,step:ps.xStep},o));
+  // baseline drift (learning) diagnostic
+  const bm=a.means.slice(0,BASE), br=a.ranges.slice(0,BASE);
+  const h1=mean(bm.slice(0,4)), h2=mean(bm.slice(4,8)), r1=mean(br.slice(0,4)), r2b=mean(br.slice(4,8));
+  const drift=h2-h1;
+  const driftBig=Math.abs(drift)>0.5*A2*L2.rb;
+  // capability of the baseline
+  const sig=L2.rb/d2, cp=(SPEC_HI-SPEC_LO)/(6*sig), cpk=Math.min(SPEC_HI-L2.xbb,L2.xbb-SPEC_LO)/(3*sig);
+  const timing='baseline '+mmss(S.t.limits-S.t.baseline)+' · limits '+mmss(S.t.production-S.t.limits)+' · production '+mmss(S.t.reveal-S.t.production);
+  // under the hood: operators, practice, tampering
+  const byOp={};S.samples.forEach(smp=>{(smp.ops||[]).forEach((op,j)=>{(byOp[op]=byOp[op]||[]).push(smp.r[j]);});});
+  const opNames=S.roster.length?S.roster.filter(o=>byOp[o]):Object.keys(byOp);
+  const opMeans=opNames.map(o=>({o,m:mean(byOp[o]),n:byOp[o].length}));
+  const opSpread=opMeans.length?Math.max(...opMeans.map(x=>x.m))-Math.min(...opMeans.map(x=>x.m)):0;
+  let pooled=0,dfp=0;opNames.forEach(o=>{const v=byOp[o];if(v.length>1){const mu=mean(v);pooled+=v.reduce((acc,x)=>acc+(x-mu)*(x-mu),0);dfp+=v.length-1;}});
+  const withinSD=dfp?Math.sqrt(pooled/dfp):0;
+  const preFault=[];for(let i=BASE;i<(fs?fs-1:a.n);i++)preFault.push(a.ranges[i]);
+  const holds=smp=>smp.sec?mean(smp.sec):null;
+  const hBase=mean(S.samples.slice(0,BASE).map(holds).filter(x=>x!=null));
+  const postF=fs?S.samples.slice(fs-1).map(holds).filter(x=>x!=null):[];
+  const prodH=S.samples.slice(BASE).map(holds).filter(x=>x!=null);
+  const hPost=postF.length?mean(postF):null, hProd=prodH.length?mean(prodH):null;
+  let tamper='n/a', tamperText='';
+  if(fs&&(f.type==='high'||f.type==='low')&&hPost!=null){
+    const absorbed=(hBase-hPost)*RATE*f.factor/(f.shiftML||1)*(f.type==='high'?1:-1)*100;
+    const ab=Math.max(0,absorbed);
+    tamper=ab>100?'over-corrected':Math.round(ab)+'% absorbed';
+    tamperText='Holds: '+hBase.toFixed(2)+' s in the baseline, '+hPost.toFixed(2)+' s once the fault began. '+(ab<10?'You held steady: no tampering. The chart saw the whole shift.':ab>100?'You over-corrected: the operators reversed the shift by feel. That is tampering (Deming\'s funnel): adjusting a process to single readings adds variation and hides the real change from the chart.':'You absorbed about '+Math.round(ab)+'% of the shift by feel. That is tampering (Deming\'s funnel): the operator hid part of a real change from the chart.');
+  }else if(hProd!=null){tamper='none';tamperText='Holds: '+hBase.toFixed(2)+' s in the baseline, '+hProd.toFixed(2)+' s in production. No tampering to detect'+(fs?' (a spread fault cannot be absorbed by feel)':'')+'.';}
+  const hood='<div><h3>Under the hood: your operators and your learning</h3><div class="stack" style="gap:8px">'
+    +(opMeans.length?'<p class="note"><b>Operator means:</b> '+esc(opMeans.map(x=>x.o+' '+Math.round(x.m)).join(' · '))+' (spread '+Math.round(opSpread)+' mL; typical within-operator sd '+Math.round(withinSD)+' mL). Every sample mixed four operators, so those differences sat inside R̄ as common cause. The fault hit the valve, which hits every operator, so it could only show up between samples.</p>':'')
+    +'<p class="note"><b>Ranges:</b> baseline samples 1–4 averaged '+f2(r1)+' mL, samples 5–8 averaged '+f2(r2b)+' mL'+(preFault.length?', production before the fault '+f2(mean(preFault))+' mL ('+preFault.length+' sample'+(preFault.length===1?'':'s')+')':'')+'. '+(r2b<r1*0.85?'That drop is practice, a real reduction in common-cause variation. On a Shewhart chart improvement shows as R points running below the center line, not as an alarm; a real line would recompute its limits after it.':'No practice effect to speak of: your spread held steady.')+'</p>'
+    +'<p class="note"><b>Baseline means:</b> samples 1–4 averaged '+f2(h1)+' mL, samples 5–8 averaged '+f2(h2)+' mL, a drift of '+(drift>=0?'+':'−')+f2(Math.abs(drift))+' mL, '+Math.round(Math.abs(drift)/(A2*L2.rb)*100)+'% of the distance from the center line to a limit. '+(driftBig?'That is the learning effect: operators homing in on 3.0 s. A plant would call this a warm-up period and start the baseline after it.':'Too small to move a point across a limit.')+'</p>'
+    +(tamperText?'<p class="note"><b>Tampering check:</b> '+esc(tamperText)+'</p>':'')
+    +((a.baseOut.x.length||a.baseOut.r.length)?'<p class="note"><b>Baseline sample'+((a.baseOut.x.length+a.baseOut.r.length)>1?'s ':' ')+esc([...new Set([...a.baseOut.x,...a.baseOut.r])].sort((p,q)=>p-q).join(', '))+'</b> sat outside your trial limits. Textbook practice: find the cause, drop the sample, recompute. We kept it for time.</p>':'')
+    +(S.blips>0||S.skips>0?'<p class="note">'+(S.blips>0?'Discarded fills (valve tapped, not held): '+S.blips+'. ':'')+(S.skips>0?'Operator skips: '+S.skips+'.':'')+'</p>':'')
+    +'</div></div>';
+  const dl=[
+    ['What actually happened',FAULTNAME[f.type]],
+    ['starting at sample',fs?String(fs):'—'],
+    ['We stopped at sample',a.stop?String(a.stop):'never stopped'],
+    ['Our diagnosis',(a.stop&&S.diag)?DIAGNAME[S.diag]+' — '+dg.grade:'—'],
+    ['Outcome',v.outcome],
+    ['First signal',firstSig],
+    ['Delay',lag!=null?lag+' sample'+(lag===1?'':'s'):'—'],
+    ['x̄ points outside the limits',a.xOut.length?a.xOut.join(', '):'none'],
+    ['R points outside the limits',a.rOut.length?a.rOut.join(', '):'none'],
+    ['Baseline points outside',(a.baseOut.x.length||a.baseOut.r.length)?[(a.baseOut.x.length?'x̄: '+a.baseOut.x.join(', '):''),(a.baseOut.r.length?'R: '+a.baseOut.r.join(', '):'')].filter(Boolean).join(' · '):'none'],
+    ['Practice: R̄ samples 1–4 → 5–8',f2(r1)+' → '+f2(r2b)+' mL'],
+    ['Holds after the fault',tamper],
+  ];
+  const rec=[
+    ['x̿ · R̄',f2(L2.xbb)+' · '+f2(L2.rb)],
+    ['UCL R · LCL R',f2(L2.uclr)+' · '+f2(L2.lclr)],
+    ['UCL x̄ · LCL x̄',f2(L2.uclx)+' · '+f2(L2.lclx)],
+    ['Attempts before confirmed',S.usedKey?'KEY':String(S.limitTries)],
+  ];
+  if(S.showMR)rec.push(['Means/ranges shown','yes']);
+  if(S.blips>0)rec.push(['Discarded fills',String(S.blips)]);
+  rec.push(['Capability of the baseline (spec 275–325)','σ̂ = R̄/d2 = '+f2(sig)+' · Cp '+f2(cp)+' · Cpk '+f2(cpk)]);
+  rec.push(['Timing',timing]);
+  if(f.forced)rec.push(['Fault','forced by instructor']);
+  const teamLine=[S.team,S.section?'section '+S.section:''].filter(Boolean).join(' · ');
+  if(teamLine)rec.push(['Team',teamLine]);
+  roomData={team:teamLine,outcome:v.head.replace(/[.,].*$/,'').replace('False alarm','False alarm').toUpperCase(),qual:v.qual,cls:v.cls,line1:'first signal: '+firstSig,line2:(fs?FAULTNAME[f.type].replace(/ \(.*\)/,'')+(lag!=null?' · '+(lag===0?'caught on the first faulty sample':'caught '+lag+' sample'+(lag===1?'':'s')+' late'):''):'no fault · '+(a.stop?'stopped at sample '+a.stop:'ran the full shift'))};
+  const room={good:'#2E7D4F',crit:'#B3261E',amber:'#C77A00',blue:'#1F5FBF'};
+  roomData.bg=v.head.startsWith('Caught')?room.good:v.head.startsWith('Missed')||v.head.startsWith('The chart')?room.crit:v.head.startsWith('False')?room.amber:room.blue;
+  $('revealBody').innerHTML=
+    '<div class="verdict '+v.cls+'"><h2 class="big">'+esc(v.head)+'</h2><div class="evidence">'+esc(ev)+'</div><p class="lead">'+esc(v.body)+'</p>'
+    +(faultLine?'<p class="lead"><b>'+esc(faultLine)+'</b></p>':'')
+    +(dg.text?'<p class="lead">'+esc(dg.text)+'</p>':'')
+    +'<div class="row"><button class="btn primary" id="roomBtn" type="button">Show the room</button></div></div>'
+    +rSVG+xSVG
+    +'<p class="note">Samples 1–8: common-cause variation. Nobody changed anything and the means still moved.'+(fs?' From sample '+fs+': assignable cause, the valve.':'')+' Red points are outside the limits; hollow red = a baseline point outside its own limits; a ring = a point you kept running on; amber shading = where the fault was active. One point outside a limit is the rule you used today; charts also signal on patterns: a run on one side of the center line, a steady climb, two of three points near a limit (Ch. 4, Control Charts). Mark on your hand-drawn charts any point that differs from these and fix it before you hand in.</p>'
+    +'<div><h3>Copy into worksheet section D</h3><dl class="dlist">'+dl.map(p=>'<dt>'+esc(p[0])+'</dt><dd>'+esc(p[1])+'</dd>').join('')+'</dl></div>'
+    +'<div><h3>For the record</h3><dl class="dlist">'+rec.map(p=>'<dt>'+esc(p[0])+'</dt><dd>'+esc(p[1])+'</dd>').join('')+'</dl><p class="note" style="margin-top:6px">In control is not the same as capable: the spec is 300 ± 25 mL, and Cp below 1 means the baseline process cannot hold it even when nothing is wrong.</p></div>'
+    +hood
+    +'<div class="verdict"><h2>You\'re done.</h2><ol class="steps-list"><li>Copy the report above into worksheet section D.</li><li>Answer the debrief questions in section E (page 2).</li><li>Hand the worksheet to the instructor.</li></ol><p class="note">When asked, tap <b>Show the room</b> and hold up the phone: green = caught it, amber = false alarm, red = missed it, blue = clean shift.</p></div>';
+  $('roomBtn').onclick=showRoom;
+}
+function showRoom(){
+  if(!roomData)return;
+  let el=$('room');if(el)el.remove();
+  el=document.createElement('div');el.id='room';el.style.background=roomData.bg;
+  el.innerHTML='<div class="t">'+esc(roomData.team||'')+'</div><div class="o">'+esc(roomData.outcome)+'</div><div class="q">'+esc(roomData.qual)+'</div><div class="d">'+esc(roomData.line1)+'</div><div class="d">'+esc(roomData.line2)+'</div><div class="x">tap to close</div>';
+  el.onclick=()=>el.remove();
+  document.body.appendChild(el);
+}
+
+/* ---------- instructor ---------- */
+function renderPeek(){
+  const p=$('peek');if(!p)return;
+  p.textContent=S.fault?('Current fault: '+(S.fault.type==='none'?'none':S.fault.type+' from sample '+(BASE+S.fault.at))+(S.fault.forced?' (forced)':'')):'No fault drawn yet (drawn when production starts).';
+}
+function simSec(){
+  const m=Math.max(1,nOps());
+  if(!S.simBias||S.simBias.length!==m){S.simBias=Array.from({length:m},()=>gauss()*0.10);}
+  const idx=S.phase===0?S.warmPtr:S.opIdx;
+  return 3.0+S.simBias[idx%m]+gauss()*0.18;
+}
+function valveFree(){if(S.phase!==1&&S.phase!==3)return false;return !$('valve').disabled;}
+
+/* ---------- render ---------- */
+function setSteps(){
+  document.querySelectorAll('#steps div').forEach(d=>{const k=+d.dataset.step;d.className=k<S.phase?'done':k===S.phase?'now':'';});
+  ['p0','p1','p2','p4'].forEach(id=>$(id).classList.add('hidden'));
+  const show=S.phase===0?'p0':(S.phase===1||S.phase===3)?'p1':S.phase===2?'p2':'p4';
+  $(show).classList.remove('hidden');
+  const h=$(show).querySelector('h2');focusCard('phase:'+S.phase,h,'start');
+}
+function render(){
+  setSteps();
+  if(S.phase===0)renderSetup();
+  if(S.phase===1||S.phase===3)renderRun();
+  if(S.phase===2)renderLimits();
+  if(S.phase===4)renderReveal();
+  renderLog();
+  if(INSTR)renderPeek();
+  if(S.phase===0)setStatus('idle','Station idle');
+  else if(S.phase===4)setStatus(S.stopAt?'stop':'idle','Shift over');
+  else if(S.phase===2)setStatus('idle','Line paused: set limits');
+  else if(S.phase===3&&S.stopAt&&!S.resumed)setStatus('stop','Line stopped');
+  else if(!$('valve').classList.contains('open'))setStatus('run',S.phase===3?'Production':'Baseline');
+}
+
+/* ---------- boot ---------- */
+function start(){
+  S=load()||fresh();
+  if(!INSTR){const el=$('instr');if(el)el.remove();}
+  const v0=bindValve($('valve0'),sec=>{const val=Math.round(sec*RATE);const d=val-TARGET;const who=opName(S.warmPtr);readoutHTML($('readout0'),'Practice fill · '+who+' · target 300','<span>'+val+' mL</span><span class="dev">'+(d===0?'on target':(d>0?'+'+d+' over':'−'+Math.abs(d)+' under'))+'</span>');
+      S.warm++;S.warmVals.push(val);if(S.warmVals.length>5)S.warmVals.shift();
+      while(S.warmBy.length<nOps())S.warmBy.push(0);
+      S.warmBy[S.warmPtr]=(S.warmBy[S.warmPtr]||0)+1;
+      if(S.warmBy[S.warmPtr]>=WARM_EACH){let k=0;while(k<nOps()&&S.warmBy[S.warmPtr]>=WARM_EACH){S.warmPtr=(S.warmPtr+1)%nOps();k++;}}
+      save();renderSetup();setStatus('idle','Station idle');},
+    (msg)=>{readoutHTML($('readout0'),'Practice fill','<span class="msg">'+esc(msg.startsWith('Spill')?'Valve blip: no bottle. Hold longer.':msg)+'</span>');setStatus('idle','Station idle');});
+  const v1=bindValve($('valve'),recordFill,abortMsg($('readout')));
+  $('team').addEventListener('input',e=>{S.team=e.target.value;save();});
+  $('section').addEventListener('change',e=>{S.section=e.target.value;save();});
+  $('roster').addEventListener('input',e=>{S.roster=parseRoster(e.target.value);S.warmBy=S.warmBy.slice(0,S.roster.length);while(S.warmBy.length<S.roster.length)S.warmBy.push(0);if(S.warmPtr>=Math.max(1,S.roster.length))S.warmPtr=0;save();renderSetup();});
+  $('roster').addEventListener('blur',()=>{$('roster').value=S.roster.join(' ');});
+  $('startBaseline').onclick=()=>{if(nOps()<4)return;S.opIdx=0;goPhase(1);};
+  $('startAnyway').onclick=()=>{if(nOps()<4)return;S.opIdx=0;goPhase(1);};
+  $('revealMR').onclick=()=>{if(!unlockAssist())return;S.showMR=true;save();render();};
+  $('keyLink').onclick=()=>{if(!unlockAssist())return;S.keyShown=true;save();renderLimits();};
+  $('checkLimits').onclick=checkLimits;
+  Object.values(LIDS).forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();checkLimits();}}));
+  // reset: inline two-step
+  const resetRow=$('resetRow');
+  const resetClick=()=>{
+    resetRow.innerHTML='<span class="note">Clear everything?</span><button class="btn danger" id="resetYes" type="button">Yes, clear</button><button class="btn ghost" id="resetNo" type="button">No</button>';
+    const revert=()=>{resetRow.innerHTML='<button class="btn ghost" id="resetBtn" type="button">Reset station</button>';$('resetBtn').onclick=resetClick;};
+    const tm=setTimeout(revert,5000);
+    $('resetNo').onclick=()=>{clearTimeout(tm);revert();};
+    $('resetYes').onclick=()=>{clearTimeout(tm);
+      try{localStorage.setItem(KEY_PREV,JSON.stringify({ts:Date.now(),state:S}));}catch(e){}
+      const t=S.team,s=S.section,ro=S.roster.slice();S=fresh();S.team=t;S.section=s;S.roster=ro;S.warmBy=ro.map(()=>0);
+      Object.values(LIDS).forEach(id=>{$(id).value='';});for(const k in LIDS)badge(k,null,'');$('limitMsg').textContent='';$('confirmCard').classList.add('hidden');$('keyBlock').classList.add('hidden');$('mrHint').classList.add('hidden');
+      readoutHTML($('readout'),'Scale','<span>---</span>');readoutHTML($('readout0'),'Practice fill · target 300','<span>---</span>');
+      lastUI=null;roomData=null;save();render();revert();};
+  };
+  $('resetBtn').onclick=resetClick;
+  // instructor sim
+  if(INSTR){
+    let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY_INSTR)||'null');}catch(e){}
+    if(saved){if(saved.mode)$('faultMode').value=saved.mode;if(saved.at)$('faultAt').value=saved.at;}
+    const persist=()=>{try{localStorage.setItem(KEY_INSTR,JSON.stringify({mode:$('faultMode').value,at:$('faultAt').value}));}catch(e){}};
+    $('faultMode').addEventListener('change',persist);$('faultAt').addEventListener('change',persist);
+    const oneFill=()=>{simming=true;lockUntil=0;render();try{if(S.phase===0){if($('valve0').disabled)return false;v0.simulate(simSec());return true;}if(!valveFree())return false;v1.simulate(simSec());return true;}finally{setTimeout(()=>{simming=false;},180);}};
+    $('simFill').onclick=()=>{oneFill();};
+    $('simSample').onclick=()=>{let k=0;const iv=setInterval(()=>{if(k>=N||!oneFill()){clearInterval(iv);return;}k++;},200);};
+    $('simRest').onclick=()=>{if(simTimer){clearInterval(simTimer);simTimer=null;return;}simTimer=setInterval(()=>{if(!oneFill()){clearInterval(simTimer);simTimer=null;}},200);};
+    $('fillKey').onclick=()=>{if(S.phase!==2)return;const L2=limits2();for(const k in LIDS)$(LIDS[k]).value=f2(L2[k]);};
+  }
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)keepAwake();});
+  let rt=null;const rerender=()=>{if(S.phase!==4)return;clearTimeout(rt);rt=setTimeout(()=>renderReveal(),150);};
+  window.addEventListener('resize',rerender);window.addEventListener('orientationchange',rerender);
+  render();keepAwake();
+}
+start();
+})();
+</script>
+</body>
+</html>
