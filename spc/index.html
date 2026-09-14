@@ -245,7 +245,7 @@ details.instr .row{margin-top:8px}
       <p class="lead">You run the fill valve on Line 4. Hold it open about 3 seconds to fill a 300 mL bottle (it flows 100 mL per second). You can't see into the bottle, so you fill by feel. A scale weighs each tray of four bottles.</p>
       <ol class="rules">
         <li>Pick a <b>recorder</b>: worksheet, pen, calculator.</li>
-        <li>Everyone else is an <b>operator</b>: enter your Kahoot names in seating order. Pass the valve after <b>every bottle</b>, around the circle, so each sample of 4 comes from 4 different people. The phone stays on the table.</li>
+        <li>Everyone else is an <b>operator</b>: enter your initials in seating order. Pass the valve after <b>every bottle</b>, around the circle, so each sample of 4 comes from 4 different people. The phone stays on the table.</li>
         <li><b>Feel only.</b> No counting out loud, no stopwatch. Never adjust your hold because of the numbers: deciding whether the process changed is the chart's job, not the operator's.</li>
         <li>One phone for the whole shift. The data lives on it. No private tab.</li>
       </ol>
@@ -255,7 +255,7 @@ details.instr .row{margin-top:8px}
           <select id="section"><option value="">choose</option><option value="016">016 · 2:20 pm</option><option value="017">017 · 3:55 pm</option><option value="018">018 · 5:30 pm</option></select></label>
       </div>
       <div class="row">
-        <label class="f grow"><span>Operators, in seating order (Kahoot names, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. Will-6PT Maya-K3L Jordan-9CF Sam-DM9" maxlength="140" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label class="f grow"><span>Operators, in seating order (initials, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. MK AB CD EF GH" maxlength="60" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false"></label>
       </div>
       <p class="note mono" id="rosterMsg"></p>
       <div id="restoreWrap" class="hidden"><button class="btn link" id="restoreBtn" type="button"></button></div>
@@ -394,7 +394,7 @@ function fresh(){return {rev:0,phase:0,team:'',section:'',roster:[],warmBy:[],wa
 const nOps=()=>S.roster.length;
 const opName=i=>S.roster.length?S.roster[((i%S.roster.length)+S.roster.length)%S.roster.length]:'?';
 function setBig(el,text){el.textContent=text;el.classList.toggle('long',text.length>8);}
-function parseRoster(str){const seen={};return str.split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
+function parseRoster(str){const seen={};return str.toUpperCase().split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
 function save(){S.rev=(S.rev||0)+1;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function adopt(){const o=load();if(o&&(o.rev||0)>(S.rev||0)){S=o;lastUI=null;shownPhase=null;render();}}
 function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
