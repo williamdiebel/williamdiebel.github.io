@@ -112,7 +112,8 @@ input[type=text],select{font:inherit;font-family:var(--mono);font-size:max(16px,
 .valve{width:min(280px,100%);height:auto;aspect-ratio:1/1;border-radius:50%;border:6px solid var(--accent);background:var(--panel);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;user-select:none;-webkit-user-select:none;
   -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:none;box-shadow:0 6px 0 var(--accent-soft), inset 0 0 0 10px var(--panel-2);transition:transform .08s;padding:12px}
-.valve .big{font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:.06em;pointer-events:none}
+.valve .big{font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:.06em;pointer-events:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.valve .big.long{font-size:1.15rem;letter-spacing:.02em}
 .valve .sub{font-size:.78rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-family:var(--display);text-align:center;pointer-events:none}
 .valve.open{background:var(--accent-soft);transform:translateY(4px);box-shadow:0 2px 0 var(--accent-soft), inset 0 0 0 10px var(--accent-soft)}
 .valve.open .big{color:var(--accent)}
@@ -244,7 +245,7 @@ details.instr .row{margin-top:8px}
       <p class="lead">You run the fill valve on Line 4. Hold it open about 3 seconds to fill a 300 mL bottle (it flows 100 mL per second). You can't see into the bottle, so you fill by feel. A scale weighs each tray of four bottles.</p>
       <ol class="rules">
         <li>Pick a <b>recorder</b>: worksheet, pen, calculator.</li>
-        <li>Everyone else is an <b>operator</b>. Pass the valve after <b>every bottle</b>, around the circle, so each sample of 4 comes from 4 different people. The phone stays on the table.</li>
+        <li>Everyone else is an <b>operator</b>: enter your Kahoot names in seating order. Pass the valve after <b>every bottle</b>, around the circle, so each sample of 4 comes from 4 different people. The phone stays on the table.</li>
         <li><b>Feel only.</b> No counting out loud, no stopwatch. Never adjust your hold because of the numbers: deciding whether the process changed is the chart's job, not the operator's.</li>
         <li>One phone for the whole shift. The data lives on it. No private tab.</li>
       </ol>
@@ -254,7 +255,7 @@ details.instr .row{margin-top:8px}
           <select id="section"><option value="">choose</option><option value="016">016 · 2:20 pm</option><option value="017">017 · 3:55 pm</option><option value="018">018 · 5:30 pm</option></select></label>
       </div>
       <div class="row">
-        <label class="f grow"><span>Operators, in seating order (initials, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. MK AB CD EF GH" maxlength="60" inputmode="text" autocomplete="off" autocapitalize="characters"></label>
+        <label class="f grow"><span>Operators, in seating order (Kahoot names, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. Will-6PT Maya-K3L Jordan-9CF Sam-DM9" maxlength="140" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
       </div>
       <p class="note mono" id="rosterMsg"></p>
       <div id="restoreWrap" class="hidden"><button class="btn link" id="restoreBtn" type="button"></button></div>
@@ -392,7 +393,8 @@ function fresh(){return {rev:0,phase:0,team:'',section:'',roster:[],warmBy:[],wa
   stopAt:null,diag:null,resumed:false,done:false,blips:0,t:{},simBias:null};}
 const nOps=()=>S.roster.length;
 const opName=i=>S.roster.length?S.roster[((i%S.roster.length)+S.roster.length)%S.roster.length]:'?';
-function parseRoster(str){const seen={};return str.toUpperCase().split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
+function setBig(el,text){el.textContent=text;el.classList.toggle('long',text.length>8);}
+function parseRoster(str){const seen={};return str.split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
 function save(){S.rev=(S.rev||0)+1;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function adopt(){const o=load();if(o&&(o.rev||0)>(S.rev||0)){S=o;lastUI=null;shownPhase=null;render();}}
 function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
@@ -468,7 +470,7 @@ function bindValve(btn, onFill, onAbort){
     if(t0!==null){e.preventDefault();return;}
     pid=(e.pointerId!=null)?e.pointerId:null;
     t0=performance.now();
-    btn.classList.add('open');btn.querySelector('.big').textContent='OPEN';btn.querySelector('.sub').textContent='';
+    btn.classList.add('open');setBig(btn.querySelector('.big'),'OPEN');btn.querySelector('.sub').textContent='';
     readoutHTML(btn.parentElement.querySelector('.readout'),'Valve','<span>FILLING</span>');
     setStatus('run','Valve open');
     try{if(pid!=null&&btn.setPointerCapture)btn.setPointerCapture(pid);}catch(x){}
@@ -538,9 +540,9 @@ function renderSetup(){
   const v0=$('valve0'), b0=v0.querySelector('.big'), s0=v0.querySelector('.sub');
   v0.disabled=m<4||need.length===0;
   if(!v0.classList.contains('open')){
-    if(m<4){b0.textContent='HOLD';s0.textContent='enter 4+ operators first';}
-    else if(need.length===0){b0.textContent='DONE';s0.textContent='warm-up complete';}
-    else{b0.textContent=opName(S.warmPtr);s0.textContent='hold ≈ 3 s, then release';}
+    if(m<4){setBig(b0,'HOLD');s0.textContent='enter 4+ operators first';}
+    else if(need.length===0){setBig(b0,'DONE');s0.textContent='warm-up complete';}
+    else{setBig(b0,opName(S.warmPtr));s0.textContent='hold ≈ 3 s, then release';}
   }
   if(m<4)$('warmCount').textContent='Enter your operators first.';
   else if(need.length===0)$('warmCount').textContent='Warm-up complete: every operator has '+WARM_EACH+' practice fills.';
@@ -580,11 +582,11 @@ function renderRun(){
   v.classList.toggle('locked',locked&&!v.disabled);
   const big=v.querySelector('.big'), sub=v.querySelector('.sub');
   if(!v.classList.contains('open')){
-    if(awaitingCall){big.textContent='CALL IT';sub.textContent='plot it, then keep or stop';}
-    else if(awaitingDiag||awaitingRestart){big.textContent='WAIT';sub.textContent='line stopped';}
-    else if(runOver){big.textContent='DONE';sub.textContent=mon?'shift over':'baseline complete';}
-    else if(locked){big.textContent=opName(S.opIdx);sub.textContent='pass the valve';}
-    else{big.textContent=opName(S.opIdx);sub.textContent='hold · valve open while pressed';}
+    if(awaitingCall){setBig(big,'CALL IT');sub.textContent='plot it, then keep or stop';}
+    else if(awaitingDiag||awaitingRestart){setBig(big,'WAIT');sub.textContent='line stopped';}
+    else if(runOver){setBig(big,'DONE');sub.textContent=mon?'shift over':'baseline complete';}
+    else if(locked){setBig(big,opName(S.opIdx));sub.textContent='pass the valve';}
+    else{setBig(big,opName(S.opIdx));sub.textContent='hold · valve open while pressed';}
   }
   const idx=S.samples.length+1;
   $('nLeft').textContent=Math.max(0,total*N-doneSamples*N-S.cur.length);
