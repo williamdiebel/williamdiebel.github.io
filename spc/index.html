@@ -254,7 +254,7 @@ details.instr .row{margin-top:8px}
           <select id="section"><option value="">choose</option><option value="016">016 · 2:20 pm</option><option value="017">017 · 3:55 pm</option><option value="018">018 · 5:30 pm</option></select></label>
       </div>
       <div class="row">
-        <label class="f grow"><span>Operators, in seating order (initials, 4 to 8, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. MK AB CD EF GH" maxlength="60" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false"></label>
+        <label class="f grow"><span>Operators, in seating order (initials, 4 to 7, separated by spaces)</span><input type="text" id="roster" placeholder="e.g. MK AB CD EF GH" maxlength="60" inputmode="text" autocomplete="off" autocapitalize="characters" spellcheck="false"></label>
       </div>
       <p class="note mono" id="rosterMsg"></p>
       <div id="restoreWrap" class="hidden"><button class="btn link" id="restoreBtn" type="button"></button></div>
@@ -303,7 +303,7 @@ details.instr .row{margin-top:8px}
     <header><h2 tabindex="-1">Set the control limits</h2><span class="eyebrow">Step 3 of 5 · Limits</span></header>
     <div class="stack">
       <p class="lead"><b>Split it:</b> each operator computes the mean and range of one sample (sum ÷ 4, largest − smallest); one person does the two averages and the four limits; the recorder checks the worksheet against the log. Enter your six numbers and the station checks them.</p>
-      <p class="note">(A plant would take 20 to 25 samples before trusting these limits; 8 is our classroom compromise, so expect them to be a little rough.)</p>
+      <p class="note">(A plant would take 20 to 25 samples before trusting these limits; 5 is our classroom compromise, so expect them to be a little rough.)</p>
       <div class="formula">n = 4 bottles per sample: A2 = 0.729, D3 = 0, D4 = 2.282<br><b>R chart first:</b> UCL<sub>R</sub> = D4 · R̄ &nbsp; LCL<sub>R</sub> = D3 · R̄ &nbsp;&nbsp;·&nbsp;&nbsp; <b>Then the x̄ chart:</b> UCL, LCL = x̿ ± A2 · R̄</div>
       <div class="lgroup"><h3>Averages</h3>
         <div class="limits">
@@ -351,7 +351,7 @@ details.instr .row{margin-top:8px}
     <details class="instr" open><summary>Instructor settings</summary>
       <div class="row">
         <label class="f"><span>Fault</span><select id="faultMode"><option value="random">Random (default)</option><option value="high">Valve drifts high</option><option value="low">Valve drifts low</option><option value="spread">Pressure surges (spread)</option><option value="none">No fault</option></select></label>
-        <label class="f"><span>Fault begins at sample</span><select id="faultAt"><option value="random">Random</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option></select></label>
+        <label class="f"><span>Fault begins at sample</span><select id="faultAt"><option value="random">Random</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option></select></label>
       </div>
       <p class="note" style="margin-top:8px">Read when production starts. Any non-random choice is printed as (forced) on the report. <span id="peek" class="mono"></span></p>
       <div class="row">
@@ -374,10 +374,10 @@ details.instr .row{margin-top:8px}
 <script>
 (function(){
 'use strict';
-const RATE=100, TARGET=300, N=4, BASE=8, MON=6, SLOTS=BASE+MON;
+const RATE=100, TARGET=300, N=4, BASE=5, MON=6, SLOTS=BASE+MON;
 const A2=0.729, D3=0, D4=2.282, d2=2.059;
 const SPEC_LO=275, SPEC_HI=325;
-const HOLD_MIN=0.8, HOLD_MAX=6.0, LOCK_MS=1500, WARM_EACH=3;
+const HOLD_MIN=0.8, HOLD_MAX=6.0, LOCK_MS=1500, WARM_EACH=2, MAX_OPS=7;
 const KEY='congaree-fill-station-v2', KEY_INSTR=KEY+'-instr', KEY_PREV=KEY+'-prev';
 const qs=new URLSearchParams(location.search);
 const INSTR=location.hash==='#instructor'||qs.has('instructor');
@@ -391,7 +391,7 @@ function fresh(){return {rev:0,phase:0,team:'',section:'',roster:[],warmBy:[],wa
 const nOps=()=>S.roster.length;
 const opName=i=>S.roster.length?S.roster[((i%S.roster.length)+S.roster.length)%S.roster.length]:'?';
 function setBig(el,text){el.textContent=text;el.classList.toggle('long',text.length>8);}
-function parseRoster(str){const seen={};return str.toUpperCase().split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,8).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
+function parseRoster(str){const seen={};return str.toUpperCase().split(/[\s,;/]+/).map(x=>x.trim()).filter(Boolean).slice(0,MAX_OPS).map(x=>{seen[x]=(seen[x]||0)+1;return seen[x]>1?x+seen[x]:x;});}
 function save(){S.rev=(S.rev||0)+1;try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 function adopt(){const o=load();if(o&&(o.rev||0)>(S.rev||0)){S=o;lastUI=null;shownPhase=null;render();}}
 function load(){try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);
@@ -565,7 +565,7 @@ function renderRun(){
   $('runStep').textContent=mon?'Step 4 of 5 · Production':'Step 2 of 5 · Baseline';
   $('runLead').innerHTML=mon
     ?(S.resumed?'Line restarted: fill the remaining samples, same rotation, same feel. Plot each one on page 2. No more calls.':'Shipping starts now: <b>6 more samples of 4</b>, same rotation, same feel. After each tray: recorder writes the row in section C, plotter plots x̄ and R on page 2, caller reads them against the limits, and the team taps the call. A stopped line is expensive; so is shipping bad bottles.')
-    :'<b>8 samples of 4 bottles.</b> Pass the valve after every bottle. Recorder: copy each sample into worksheet section A when its four readings appear.';
+    :'<b>5 samples of 4 bottles.</b> Pass the valve after every bottle. Recorder: copy each sample into worksheet section A when its four readings appear.';
   $('runNote').textContent=mon?'You are the valve, not the controller: hold for what feels like 3.0 s, every time.':'Each sample is four different operators on purpose. Hold on to why until the debrief.';
   const total=mon?MON:BASE, doneSamples=S.samples.length-(mon?BASE:0);
   const lastS=S.samples[S.samples.length-1];
@@ -625,7 +625,7 @@ function renderRun(){
   const rd=$('runDone');rd.innerHTML='';
   if(!mon&&doneSamples>=BASE){
     rd.className='callbox';
-    rd.innerHTML='<div><span class="eyebrow">Baseline complete</span><p class="lead">8 samples logged. Recorder: check that section A has all 32 readings.</p></div><div class="row"><button class="btn primary" id="toLimits" type="button">Go to Step 3: set the limits</button></div>';
+    rd.innerHTML='<div><span class="eyebrow">Baseline complete</span><p class="lead">5 samples logged. Recorder: check that section A has all 20 readings.</p></div><div class="row"><button class="btn primary" id="toLimits" type="button">Go to Step 3: set the limits</button></div>';
     $('toLimits').onclick=()=>{S.limits=trueLimits();goPhase(2);};
     focusCard('basedone',rd,'center');
   }else rd.className='';
@@ -724,8 +724,8 @@ function renderLimits(){
     cc.classList.remove('hidden');cc.className='verdict good';
     cc.innerHTML='<span class="eyebrow">'+(S.usedKey?'Key used · write KEY in section B':'Limits confirmed on attempt '+S.limitTries+' · write '+S.limitTries+' in section B')+'</span>'
       +'<h2>Line 4 cleared for production</h2><p class="lead">'+(S.usedKey?'Use the key values above.':'Your limits match the plant\'s.')+'</p>'
-      +'<div class="scalebox"><b>Scaling your charts (page 2) — keep it rough.</b><br>x̄ chart: write <b>'+ps.xMid+'</b> on the middle line. Each line above or below is <b>'+ps.xStep+' mL</b>.<br>R chart: the bottom line is <b>0</b>. Each line above is <b>'+ps.rStep+' mL</b>.<br>Ignore the other tick marks — you do not need to label them. Draw CL solid and UCL / LCL dashed where they land, then plot each point by eye. The only thing that matters is whether a point sits inside or outside the limits.</div>'
-      +'<p class="lead"><b>Before production (worksheet page 2):</b></p><ol class="steps-list"><li>Draw CL solid, UCL and LCL dashed, on both charts. Rough is fine.</li><li>Plot samples 1–8. Usually all eight are inside on both charts. If one is not, circle it and keep going; the report will confirm it.</li><li>Then pick a <b>plotter</b> (page 2) and a <b>caller</b>, and tap below.</li></ol>'
+      +'<div class="scalebox"><b>Write these six numbers on your charts (page 2).</b><br>Both charts already have their three lines drawn. Fill in the box beside each line, then plot your points by eye between them. No scaling, no counting tick marks.<br><br><b>R chart</b> &nbsp; UCL = <b>'+f2(L2.uclr)+'</b> &nbsp; CL (R̄) = <b>'+f2(L2.rb)+'</b> &nbsp; LCL = <b>'+f2(L2.lclr)+'</b><br><b>x̄ chart</b> &nbsp; UCL = <b>'+f2(L2.uclx)+'</b> &nbsp; CL (x̿) = <b>'+f2(L2.xbb)+'</b> &nbsp; LCL = <b>'+f2(L2.lclx)+'</b></div>'
+      +'<p class="lead"><b>Before production (worksheet page 2):</b></p><ol class="steps-list"><li>Write the six numbers above into the boxes on page 2.</li><li>Plot samples 1 to '+BASE+'. Usually they are all inside on both charts. If one is not, circle it and keep going; the report will confirm it.</li><li>Then pick a <b>plotter</b> (page 2) and a <b>caller</b>, and tap below.</li></ol>'
       +'<div class="row"><button class="btn primary" id="startMonitor" type="button">We\'ve plotted the baseline — start production</button></div>';
     $('startMonitor').onclick=()=>{S.fault=makeFault();S.opIdx=0;goPhase(3);};
   }else{cc.classList.add('hidden');cc.innerHTML='';}
@@ -853,7 +853,7 @@ function verdict(a){
     if(stopWasOut){
       const w=a.which(stop);
       cls='amber';head='False alarm, and the right call.';outcome='false alarm (on signal)';qual='on signal';
-      body='Sample '+stop+'\'s '+w.chart+' ('+w.value+') was '+(w.above?'above':'below')+' your '+w.limit+' ('+w.lim+'); stopping to investigate is exactly what the chart tells you to do. The valve was fine. Either chance, or an assignable cause we did not plant (someone still learning the valve, a nudge at the table). That is the Type I cost of limits built from only 8 samples: a point lands outside by chance about once in 50 samples, against the textbook\'s 3 in 1,000 for one chart with exact limits. '
+      body='Sample '+stop+'\'s '+w.chart+' ('+w.value+') was '+(w.above?'above':'below')+' your '+w.limit+' ('+w.lim+'); stopping to investigate is exactly what the chart tells you to do. The valve was fine. Either chance, or an assignable cause we did not plant (someone still learning the valve, a nudge at the table). That is the Type I cost of limits built from only 5 samples: a point lands outside by chance about once in 40 samples, against the textbook\'s 3 in 1,000 for one chart with exact limits. '
         +(fs?(fs<=n?'The real fault began at sample '+fs+', after your stop.':'A fault was due at sample '+fs+', after you ended the shift.')+(S.resumed&&firstOutAfterFault?' After you restarted, sample '+firstOutAfterFault+'\'s '+a.chartAt(firstOutAfterFault)+' went outside.':''):'Nothing was ever wrong with the valve.');
     }else{
       cls='crit';head='False alarm, on a hunch.';outcome='false alarm (no signal)';qual='on a hunch';
@@ -922,7 +922,9 @@ function renderReveal(){
   const xSVG=chartSVG('2 · x̄ chart (mL)',a.means,L2.xbb,L2.uclx,L2.lclx,Object.assign({out:a.ox,step:ps.xStep},o));
   // baseline drift (learning) diagnostic
   const bm=a.means.slice(0,BASE), br=a.ranges.slice(0,BASE);
-  const h1=mean(bm.slice(0,4)), h2=mean(bm.slice(4,8)), r1=mean(br.slice(0,4)), r2b=mean(br.slice(4,8));
+  const half=Math.max(1,Math.floor(BASE/2));
+  const segA='samples 1'+(half>1?' to '+half:''), segB='samples '+(half+1)+(BASE>half+1?' to '+BASE:'');
+  const h1=mean(bm.slice(0,half)), h2=mean(bm.slice(half)), r1=mean(br.slice(0,half)), r2b=mean(br.slice(half));
   const drift=h2-h1;
   const driftBig=Math.abs(drift)>0.5*A2*L2.rb;
   // capability of the baseline
@@ -950,8 +952,8 @@ function renderReveal(){
   }else if(hProd!=null){tamper='none';tamperText='Holds: '+hBase.toFixed(2)+' s in the baseline, '+hProd.toFixed(2)+' s in production. No tampering to detect'+(fs?' (a spread fault cannot be absorbed by feel)':'')+'.';}
   const hood='<div><h3>Under the hood: your operators and your learning</h3><div class="stack" style="gap:8px">'
     +(opMeans.length?'<p class="note"><b>Operator means (baseline):</b> '+esc(opMeans.map(x=>x.o+' '+Math.round(x.m)).join(' · '))+' (spread '+Math.round(opSpread)+' mL; typical within-operator sd '+Math.round(withinSD)+' mL). Every sample mixed four operators, so those differences sat inside R̄ as common cause. The fault hit the valve, which hits every operator, so it could only show up between samples.</p>':'')
-    +'<p class="note"><b>Ranges:</b> baseline samples 1–4 averaged '+f2(r1)+' mL, samples 5–8 averaged '+f2(r2b)+' mL'+(preFault.length?', production before the fault '+f2(mean(preFault))+' mL ('+preFault.length+' sample'+(preFault.length===1?'':'s')+')':'')+'. '+(r2b<r1*0.6?'That is a big drop, more than chance produces with four ranges a side: practice reduced your common-cause variation. On a Shewhart chart improvement shows as R points running below the center line, not as an alarm; a real line would recompute after it.':r2b<r1*0.85?'A drop of '+Math.round((1-r2b/r1)*100)+'%, but with only four ranges a side chance alone does this about one time in three. Suggestive of practice, not proof.':'No practice effect to speak of: your spread held steady.')+'</p>'
-    +'<p class="note"><b>Baseline means:</b> samples 1–4 averaged '+f2(h1)+' mL, samples 5–8 averaged '+f2(h2)+' mL, a drift of '+(drift>=0?'+':'−')+f2(Math.abs(drift))+' mL, '+Math.round(Math.abs(drift)/(A2*L2.rb)*100)+'% of the distance from the center line to a limit. '+(driftBig?'That looks like a learning effect: operators homing in on 3.0 s. A plant would call this a warm-up period and start the baseline after it.':'Too small to move a point across a limit.')+'</p>'
+    +'<p class="note"><b>Ranges:</b> baseline '+segA+' averaged '+f2(r1)+' mL, '+segB+' averaged '+f2(r2b)+' mL'+(preFault.length?', production before the fault '+f2(mean(preFault))+' mL ('+preFault.length+' sample'+(preFault.length===1?'':'s')+')':'')+'. '+(r2b<r1*0.6?'That is a big drop: practice most likely reduced your common-cause variation. On a Shewhart chart improvement shows as R points running below the center line, not as an alarm; a real line would recompute after it.':r2b<r1*0.85?'A drop of '+Math.round((1-r2b/r1)*100)+'%, but with this few ranges a side chance alone does it often. Suggestive of practice, not proof.':'No practice effect to speak of: your spread held steady.')+'</p>'
+    +'<p class="note"><b>Baseline means:</b> baseline '+segA+' averaged '+f2(h1)+' mL, '+segB+' averaged '+f2(h2)+' mL, a drift of '+(drift>=0?'+':'−')+f2(Math.abs(drift))+' mL, '+Math.round(Math.abs(drift)/(A2*L2.rb)*100)+'% of the distance from the center line to a limit. '+(driftBig?'That looks like a learning effect: operators homing in on 3.0 s. A plant would call this a warm-up period and start the baseline after it.':'Too small to move a point across a limit.')+'</p>'
     +(tamperText?'<p class="note"><b>Tampering check:</b> '+esc(tamperText)+'</p>':'')
     +((a.baseOut.x.length||a.baseOut.r.length)?'<p class="note"><b>Baseline sample'+((a.baseOut.x.length+a.baseOut.r.length)>1?'s ':' ')+esc([...new Set([...a.baseOut.x,...a.baseOut.r])].sort((p,q)=>p-q).join(', '))+'</b> sat outside your trial limits. Textbook practice: find the cause, drop the sample, recompute. We kept it for time.</p>':'')
     +(S.blips>0||S.skips>0?'<p class="note">'+(S.blips>0?'Discarded fills (spills or stuck valve): '+S.blips+'. ':'')+(S.skips>0?'Operator skips: '+S.skips+'.':'')+'</p>':'')
@@ -967,7 +969,7 @@ function renderReveal(){
     ['x̄ points outside the limits',a.xOut.length?a.xOut.join(', '):'none'],
     ['R points outside the limits',a.rOut.length?a.rOut.join(', '):'none'],
     ['Baseline points outside',(a.baseOut.x.length||a.baseOut.r.length)?[(a.baseOut.x.length?'x̄: '+a.baseOut.x.join(', '):''),(a.baseOut.r.length?'R: '+a.baseOut.r.join(', '):'')].filter(Boolean).join(' · '):'none'],
-    ['Practice: R̄ samples 1–4 → 5–8',f2(r1)+' → '+f2(r2b)+' mL'],
+    ['Practice: R̄ '+segA+' to '+segB,f2(r1)+' → '+f2(r2b)+' mL'],
     ['Holds after the fault',tamper],
   ];
   const rec=[
